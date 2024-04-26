@@ -1,3 +1,4 @@
+import 'package:anime_slayer/colors.dart';
 import 'package:anime_slayer/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,10 +21,10 @@ class AnimeSlayer extends StatelessWidget {
               theme: ThemeData(
                 brightness: Brightness.dark,
                 primaryColor: Colors.black,
-                scaffoldBackgroundColor: const Color(0xff182128),
+                scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
                 appBarTheme: const AppBarTheme(
                   backgroundColor: //dark blue
-                      Color(0xff262E39),
+                      AppColors.primaryColor,
                 ),
                 bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                   backgroundColor: Colors.black,

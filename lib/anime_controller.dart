@@ -11,6 +11,11 @@ final animesControllerProvider =
   );
 });
 
+
+final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
+  final animes = ref.watch(animesControllerProvider).animes.asData?.value;
+  return animes?.firstWhere((element) => element.id == id);
+});
 class AnimeController extends StateNotifier<AnimeState> {
   AnimeController(this.dioClient) : super(AnimeState()) {
     fetchAnimes();

@@ -32,9 +32,9 @@ class AnimeGrid extends ConsumerWidget {
               ),
             ),
         data: (animes) => ResponsiveGridList(
-              horizontalGridSpacing: 5,
-              verticalGridSpacing: 20,
-              horizontalGridMargin: 5,
+              horizontalGridSpacing: 0,
+              verticalGridSpacing: 10,
+              horizontalGridMargin: 15,
               verticalGridMargin: 10,
               minItemWidth: 130,
               minItemsPerRow: 3,
