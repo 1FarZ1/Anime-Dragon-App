@@ -20,9 +20,10 @@ class AnimeSlayer extends StatelessWidget {
               theme: ThemeData(
                 brightness: Brightness.dark,
                 primaryColor: Colors.black,
-                scaffoldBackgroundColor: Colors.black,
+                scaffoldBackgroundColor: const Color(0xff182128),
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.black,
+                  backgroundColor: //dark blue
+                      Color(0xff262E39),
                 ),
                 bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                   backgroundColor: Colors.black,

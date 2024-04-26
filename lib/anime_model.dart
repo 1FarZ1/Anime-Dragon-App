@@ -3,7 +3,7 @@ class AnimeModel {
   final String title;
   final String description;
   final String imageUrl;
-  final int rating;
+  final double rating;
   final bool isEnded;
   final int lastEpisode;
 

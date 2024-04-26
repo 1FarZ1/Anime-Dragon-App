@@ -17,7 +17,10 @@ class MainView extends ConsumerWidget {
               // Scaffold.of(context).openDrawer();
             },
           ),
-          title: const Text('اخر التحديثات'),
+          title: Text('اخر التحديثات',
+              style: TextStyle(
+                fontSize: 18.sp,
+              )),
           // actions for seach and  report issue
           actions: [
             IconButton(
@@ -26,8 +29,16 @@ class MainView extends ConsumerWidget {
                 // showSearch(context: context, delegate: AnimeSearchDelegate());
               },
             ),
+
+            // switch grid and list view
             IconButton(
-              icon: const Icon(Icons.report),
+              icon: const Icon(Icons.grid_view),
+              onPressed: () {
+                // ref.read(animeViewControllerProvider.notifier).switchView();
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.report, color: Colors.red),
               onPressed: () {
                 // showReportIssue(context);
               },

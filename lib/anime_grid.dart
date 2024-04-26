@@ -35,7 +35,7 @@ class AnimeGrid extends ConsumerWidget {
               horizontalGridSpacing: 5,
               verticalGridSpacing: 20,
               horizontalGridMargin: 5,
-              verticalGridMargin: 0,
+              verticalGridMargin: 10,
               minItemWidth: 130,
               minItemsPerRow: 3,
               maxItemsPerRow: 5,

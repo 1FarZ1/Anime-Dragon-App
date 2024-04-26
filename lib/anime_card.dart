@@ -14,19 +14,42 @@ class AnimeCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-            imageUrl: anime.imageUrl,
-            width: 100.w,
-            height: 150.h,
-            fit: BoxFit.cover,
-            placeholder: (context, url) =>
-                //container with width and height and grey
-                Container(
-              width: 100.w,
-              height: 150.h,
-              color: Colors.grey[300],
-            ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+          Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: anime.imageUrl,
+                width: 100.w,
+                height: 150.h,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    //container with width and height and grey
+                    Container(
+                  width: 100.w,
+                  height: 150.h,
+                  color: Colors.grey[300],
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+
+              // last episode
+              Positioned(
+                bottom: 5,
+                right: 5,
+                child: Text(
+                  '${anime.lastEpisode} : حلقة',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        color: Colors.red,
+                        blurRadius: 2,
+                      ),
+                    ],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
           5.verticalSpace,
           // make the title only in 1 line , and if  is more then use overflow ellipsis
@@ -34,11 +57,12 @@ class AnimeCard extends StatelessWidget {
             anime.title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14.sp,
+              color: Colors.grey,
             ),
           ),
-          5.verticalSpace,
           Row(
             children: [
               Text(
