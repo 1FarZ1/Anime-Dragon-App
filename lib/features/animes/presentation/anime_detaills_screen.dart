@@ -6,11 +6,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'anime_detaill_header.dart';
-import '../../../description_section.dart';
-import '../../../favorite_button.dart';
-import '../../../options_action.dart';
-import 'stats_section.dart';
+import 'widgets/anime_detaill_header.dart';
+import 'widgets/description_section.dart';
+import 'widgets/favorite_button.dart';
+import 'widgets/options_action.dart';
+import 'widgets/stats_section.dart';
 import 'top_bar_view.dart';
 
 class AnimeDetaillsScreen extends HookConsumerWidget {

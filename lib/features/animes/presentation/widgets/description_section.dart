@@ -1,5 +1,5 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
-import 'package:anime_slayer/colors.dart';
+import 'package:anime_slayer/consts/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

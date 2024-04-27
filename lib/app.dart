@@ -1,5 +1,5 @@
-import 'package:anime_slayer/colors.dart';
-import 'package:anime_slayer/main_view.dart';
+import 'package:anime_slayer/consts/colors.dart';
+import 'package:anime_slayer/features/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

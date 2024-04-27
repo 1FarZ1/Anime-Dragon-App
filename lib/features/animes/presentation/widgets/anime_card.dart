@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'anime_detaills_screen.dart';
+import '../anime_detaills_screen.dart';
 
 class AnimeCard extends StatelessWidget {
   const AnimeCard({super.key, required this.anime});
