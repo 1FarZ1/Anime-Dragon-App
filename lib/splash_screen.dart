@@ -14,14 +14,12 @@ class SplashScreen extends HookWidget {
       });
       return null;
     });
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 12),
-            Text('Loading...'),
+            Image.asset('assets/logo.png'),
           ],
         ),
       ),

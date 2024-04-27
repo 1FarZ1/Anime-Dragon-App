@@ -1,20 +1,24 @@
 import 'package:anime_slayer/features/animes/presentation/widgets/anime_grid.dart';
+import 'package:anime_slayer/router/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class MainView extends ConsumerWidget {
-  const MainView({super.key});
+  MainView({super.key});
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+        key: _scaffoldKey,
+        drawer: const AnimeDrawer(),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              Scaffold.of(context).openDrawer();
+              _scaffoldKey.currentState!.openDrawer();
             },
           ),
           title: Text('اخر التحديثات',
@@ -25,10 +29,11 @@ class MainView extends ConsumerWidget {
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
-                // showSearch(context: context, delegate: AnimeSearchDelegate());
+                context.pushNamed(
+                  AppRoutes.search.name,
+                );
               },
             ),
-
             IconButton(
               icon: const Icon(Icons.grid_view),
               onPressed: () {
@@ -45,8 +50,73 @@ class MainView extends ConsumerWidget {
         ),
         body: const Column(
           children: [
-            Expanded(child: AnimeGrid()),
+            Expanded(child: AnimesView()),
           ],
         ));
+  }
+}
+
+class AnimeDrawer extends StatelessWidget {
+  const AnimeDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/avatar.png'),
+                ),
+                10.verticalSpace,
+                Text(
+                  'اسم المستخدم',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            title: const Text('الرئيسية'),
+            onTap: () {
+              // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+            },
+          ),
+          ListTile(
+            title: const Text('المفضلة'),
+            onTap: () {
+              // Navigator.of(context).pushNamedAndRemoveUntil('/favorites', (route) => false);
+            },
+          ),
+          ListTile(
+            title: const Text('التحديثات'),
+            onTap: () {
+              // Navigator.of(context).pushNamedAndRemoveUntil('/updates', (route) => false);
+            },
+          ),
+          ListTile(
+            title: const Text('الاعدادات'),
+            onTap: () {
+              // Navigator.of(context).pushNamedAndRemoveUntil('/settings', (route) => false);
+            },
+          ),
+          ListTile(
+            title: const Text('تسجيل الخروج'),
+            onTap: () {
+              // ref.read(authControllerProvider.notifier).signOut();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

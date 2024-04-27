@@ -20,11 +20,20 @@ class ReviewersWidget extends StatelessWidget {
 
     return Column(
       children: [
-        Icon(
-          isGlobal ? Icons.video_stable : Icons.star,
-          color: Colors.orange,
-          size: 30,
-        ),
+        !isGlobal
+            ? const Icon(
+                Icons.star,
+                color: Colors.orange,
+                size: 30,
+              )
+            :
+            // image of myAnimeList
+            Image.asset(
+                'assets/mal.png',
+                width: 30,
+                height: 30,
+              ),
+        5.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
