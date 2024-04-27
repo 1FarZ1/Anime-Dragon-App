@@ -15,8 +15,6 @@ class TopBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryColor,
-      width: 200,
-      height: 50.h,
       child: Column(children: [
         TabBar(
           controller: tabController,

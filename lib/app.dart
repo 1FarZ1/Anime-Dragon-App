@@ -37,12 +37,12 @@ class AnimeSlayer extends StatelessWidget {
   }
 }
 
-class DebugScreen extends StatelessWidget {
-  const DebugScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: WatchEpisodeScreen(),
-    );
-  }
-}
+// class DebugScreen extends StatelessWidget {
+//   const DebugScreen({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       body: WatchEpisodeScreen(),
+//     );
+//   }
+// }
