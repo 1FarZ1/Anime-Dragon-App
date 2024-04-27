@@ -34,7 +34,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/search',
         name: AppRoutes.search.name,
         pageBuilder: (context, state) {
-          return const MaterialPage(child: SearchAnimeView());
+          return MaterialPage(child: SearchAnimeView());
         },
       ),
       GoRoute(

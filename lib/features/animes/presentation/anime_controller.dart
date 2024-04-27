@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/consts/endpoints.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +13,34 @@ final animesControllerProvider =
   );
 });
 
+final animeSearchProvider = FutureProvider.family
+    .autoDispose<List<AnimeModel>, String>((ref, query) async {
+  final link = ref.keepAlive();
+  final animes = ref.watch(animesControllerProvider).animes.asData?.value;
+
+  Timer(const Duration(seconds: 3), () {
+    link.close();
+  });
+
+  //  do cancel token if we use real http client for search debounce
+  if (query.isNotEmpty) {
+    return await Future.value(animes!
+        .where((element) =>
+            element.title.toLowerCase().contains(query.toLowerCase()))
+        .toList());
+  } else {
+    // do sortihng by rating and  return it into new attay
+    var sortedAnimes = animes!.toList();
+    sortedAnimes.sort((a, b) => b.rating.compareTo(a.rating));
+    return Future.value(sortedAnimes);
+  }
+});
 
 final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
   final animes = ref.watch(animesControllerProvider).animes.asData?.value;
   return animes?.firstWhere((element) => element.id == id);
 });
+
 class AnimeController extends StateNotifier<AnimeState> {
   AnimeController(this.dioClient) : super(AnimeState()) {
     fetchAnimes();
