@@ -1,21 +1,22 @@
 import 'package:anime_slayer/consts/colors.dart';
-import 'package:anime_slayer/features/main_view.dart';
+import 'package:anime_slayer/router/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'features/episode/watch_episode_screen.dart';
 
-class AnimeSlayer extends StatelessWidget {
+class AnimeSlayer extends ConsumerWidget {
   const AnimeSlayer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return MaterialApp(
+          return MaterialApp.router(
+            routerConfig: ref.watch(appRouterProvider),
               title: 'Anime Slayer',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
@@ -32,7 +33,7 @@ class AnimeSlayer extends StatelessWidget {
                   unselectedItemColor: Colors.grey,
                 ),
               ),
-              home: const MainView());
+              );
         });
   }
 }

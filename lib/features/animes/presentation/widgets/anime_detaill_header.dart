@@ -1,4 +1,5 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,13 +22,14 @@ class AnimeDetaillHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          // continaer with cached network image
           Container(
             width: 120.w,
-            height: 140.h,
+            height: 180.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                image: NetworkImage(anime.imageUrl),
+                image: CachedNetworkImageProvider(anime.imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
