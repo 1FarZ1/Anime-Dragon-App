@@ -1,10 +1,10 @@
-import 'package:anime_slayer/features/animes/anime_detaills_screen.dart';
-import 'package:anime_slayer/features/animes/anime_model.dart';
-import 'package:anime_slayer/reviewers_widget.dart';
+import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.dart';
+import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:anime_slayer/features/animes/presentation/reviewers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'add_button.dart';
+import '../../../add_button.dart';
 
 class StatsSection extends StatelessWidget {
   const StatsSection({

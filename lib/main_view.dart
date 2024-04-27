@@ -1,4 +1,4 @@
-import 'package:anime_slayer/features/animes/anime_grid.dart';
+import 'package:anime_slayer/features/animes/presentation/anime_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

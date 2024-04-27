@@ -1,17 +1,17 @@
-import 'package:anime_slayer/features/animes/anime_controller.dart';
-import 'package:anime_slayer/features/animes/anime_model.dart';
-import 'package:anime_slayer/watch_episode_screen.dart';
+import 'package:anime_slayer/features/animes/presentation/anime_controller.dart';
+import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:anime_slayer/features/episode/watch_episode_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'anime_detaill_header.dart';
-import '../../description_section.dart';
-import '../../favorite_button.dart';
-import '../../options_action.dart';
-import '../../stats_section.dart';
-import '../../top_bar_view.dart';
+import '../../../description_section.dart';
+import '../../../favorite_button.dart';
+import '../../../options_action.dart';
+import 'stats_section.dart';
+import 'top_bar_view.dart';
 
 class AnimeDetaillsScreen extends HookConsumerWidget {
   const AnimeDetaillsScreen({super.key, required this.animeId});

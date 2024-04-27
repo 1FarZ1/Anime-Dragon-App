@@ -3,7 +3,7 @@ import 'package:anime_slayer/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'watch_episode_screen.dart';
+import 'features/episode/watch_episode_screen.dart';
 
 class AnimeSlayer extends StatelessWidget {
   const AnimeSlayer({super.key});
