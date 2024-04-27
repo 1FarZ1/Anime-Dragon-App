@@ -1,3 +1,4 @@
+import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,22 +13,47 @@ class SearchAnimeView extends HookConsumerWidget {
       child: Scaffold(
         body: Column(
           children: [
-            // search bar
+            // search bar with  the field in the middle , at the left back button and at the right 2 icons , one for filtering , and also the second for complex filtering,  remove borders
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(0),
               ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'ابحث عن انمي',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ),
+                  const Expanded(
+                    child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'ادخل اسم الانمي ',
+                          border: InputBorder.none,
+                          hintTextDirection: TextDirection.rtl,
+                        ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        )),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.filter_list),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.tune),
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
+
             // search result
             const ResultsView(),
           ],
