@@ -1,16 +1,17 @@
-import 'package:anime_slayer/anime_controller.dart';
-import 'package:anime_slayer/anime_model.dart';
+import 'package:anime_slayer/features/animes/anime_controller.dart';
+import 'package:anime_slayer/features/animes/anime_model.dart';
 import 'package:anime_slayer/watch_episode_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'anime_detaill_header.dart';
-import 'description_section.dart';
-import 'reviewers_widget.dart';
-import 'top_bar_view.dart';
+import '../../description_section.dart';
+import '../../favorite_button.dart';
+import '../../options_action.dart';
+import '../../stats_section.dart';
+import '../../top_bar_view.dart';
 
 class AnimeDetaillsScreen extends HookConsumerWidget {
   const AnimeDetaillsScreen({super.key, required this.animeId});
@@ -77,47 +78,11 @@ class EpisodesView extends StatelessWidget {
       itemBuilder: (context, index) {
         return ListTile(
             title: Text('الحلقة ${index + 1}'),
-            trailing: const Icon(Icons.play_arrow),
+            trailing: const Icon(Icons.remove_red_eye),
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => WatchEpisodeScreen(
-                      episodeNumber: index,
+                      episodeNumber: index + 1,
                     ))));
-      },
-    );
-  }
-}
-
-class FavoriteButton extends StatelessWidget {
-  const FavoriteButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.favorite_border),
-      onPressed: () {},
-    );
-  }
-}
-
-class OptionsAction extends StatelessWidget {
-  const OptionsAction({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: (context) {
-        return [
-          const PopupMenuItem(
-            child: Text('Report Issue'),
-          ),
-          const PopupMenuItem(
-            child: Text('Share'),
-          ),
-        ];
       },
     );
   }
@@ -137,71 +102,6 @@ class FirstView extends StatelessWidget {
         StatsSection(anime: anime),
         10.verticalSpace,
         DescriptionSection(anime: anime),
-      ],
-    );
-  }
-}
-
-class StatsSection extends StatelessWidget {
-  const StatsSection({
-    super.key,
-    required this.anime,
-  });
-
-  final AnimeModel anime;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(child: ReviewersWidget(anime: anime)),
-          Expanded(child: ReviewersWidget(anime: anime, isGlobal: true)),
-          const Expanded(
-              child: AddButton(
-            text: 'اضافة تقييم',
-            icon: Icons.star_border_outlined,
-          )),
-          const Expanded(
-              child: AddButton(
-            text: 'قائمتي',
-            icon: Icons.add,
-          )),
-        ],
-      ),
-    );
-  }
-}
-
-class AddButton extends StatelessWidget {
-  const AddButton({
-    super.key,
-    required this.text,
-    required this.icon,
-  });
-
-  final String text;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          color: Colors.grey,
-          size: 30,
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ],
     );
   }

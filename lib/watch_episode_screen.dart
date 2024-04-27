@@ -1,4 +1,6 @@
+import 'package:anime_slayer/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
 class WatchEpisodeScreen extends StatefulWidget {
@@ -16,72 +18,216 @@ class _WatchEpisodeScreenState extends State<WatchEpisodeScreen> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(
-        Uri.parse(
-            'http://192.168.43.176:5500/api/episodes/episode/stream/${widget.episodeNumber}'),
-        videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true,
-        ))
-      ..initialize().then((_) {
+      Uri.parse(
+          'http://192.168.43.176:5500/api/episodes/episode/stream/${widget.episodeNumber}'),
+      videoPlayerOptions: VideoPlayerOptions(
+        mixWithOthers: true,
+      ),
+    )..initialize().then((_) {
         setState(() {
           _controller.play();
         });
       });
   }
 
-  double position = 0;
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    _controller.addListener(() {
-      setState(() {
-        position = _controller.value.position.inSeconds.toDouble();
-      });
-    });
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Episode ${widget.episodeNumber}'),
-      ),
-      body: Center(
-        child: _controller.value.isInitialized
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  VideoView(controller: _controller),
-                  VideoSlider(
-                    controller: _controller,
-                    position: position,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      OptionsWidget(
-                        controller: _controller,
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Stack(
+                        children: [
+                          GestureDetector(
+                              onDoubleTap: () {
+                                setState(() {
+                                  if (_controller.value.isPlaying) {
+                                    _controller.pause();
+                                  } else {
+                                    _controller.play();
+                                  }
+                                });
+                              },
+                              child: VideoPlayer(_controller)),
+                          _buildGradientOverlay(),
+                        ],
                       ),
-                      // ChangeSpeedWidget(
-                      //   controller: _controller,
-                      // ),
-                      LoopWidget(
-                        controller: _controller,
-                      ),
-                    ],
+                    ),
+                  )
+                : const CircularProgressIndicator(
+                    color: Colors.white,
                   ),
-                  // SoundWidget(
-                  //   controller: _controller,
-                  // ),
-                ],
-              )
-            : Container(),
+          ),
+          _buildControls(context),
+
+          // epsiode number on top
+          Positioned(
+            top: 50.0,
+            right: 50.0,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 5.0,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Text(
+                'الحلقة ${widget.episodeNumber}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
+  Widget _buildControls(BuildContext context) {
+    return Positioned(
+      bottom: 20.0,
+      left: 0.0,
+      right: 0.0,
+      child: Container(
+        height: 80.0, // Set control bar height
+        padding: const EdgeInsets.symmetric(horizontal: 10.0), // Add padding
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.transparent.withOpacity(0.0),
+              Colors.black.withOpacity(0.8)
+            ],
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: PlayButton(
+                controller: _controller,
+              ),
+            ),
+            Expanded(flex: 5, child: PlayBackControls(controller: _controller)),
+            Expanded(child: LoopWidget(controller: _controller)),
+            Expanded(child: ChangeSpeedWidget(controller: _controller)),
+          ],
+        ),
+      ),
+    );
+  }
 
-    super.dispose();
+  Widget _buildGradientOverlay() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.transparent,
+            Colors.black.withOpacity(0.8),
+          ],
+        ),
+      ),
+    );
   }
 }
 
+class PlayButton extends StatefulWidget {
+  const PlayButton({super.key, required this.controller});
+  final VideoPlayerController controller;
+
+  @override
+  State<PlayButton> createState() => _PlayButtonState();
+}
+
+class _PlayButtonState extends State<PlayButton> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      iconSize: 16.0,
+      color: Colors.white,
+      icon: Icon(
+          widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+      onPressed: () {
+        setState(() {
+          if (widget.controller.value.isPlaying) {
+            widget.controller.pause();
+          } else {
+            widget.controller.play();
+          }
+        });
+      },
+    );
+  }
+}
+
+class PlayBackControls extends StatelessWidget {
+  const PlayBackControls({
+    super.key,
+    required VideoPlayerController controller,
+  }) : _controller = controller;
+
+  final VideoPlayerController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          iconSize: 16.0,
+          color: Colors.white,
+          icon: const Icon(Icons.replay_10),
+          onPressed: () {
+            _controller.seekTo(
+                _controller.value.position - const Duration(seconds: 10));
+          },
+        ),
+        Expanded(
+          child: VideoProgressIndicator(
+            _controller,
+            allowScrubbing: true,
+            colors: const VideoProgressColors(
+              playedColor: AppColors.primaryColor,
+              bufferedColor: Colors.grey,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ),
+        IconButton(
+          iconSize: 16.0,
+          color: Colors.white,
+          icon: const Icon(Icons.forward),
+          onPressed: () {
+            _controller.seekTo(
+                _controller.value.position + const Duration(seconds: 10));
+          },
+        ),
+      ],
+    );
+  }
+}
+
+//TODO`
 class LoopWidget extends StatefulWidget {
   const LoopWidget({super.key, required this.controller});
   final VideoPlayerController controller;
@@ -93,20 +239,16 @@ class LoopWidget extends StatefulWidget {
 class _LoopWidgetState extends State<LoopWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              widget.controller.setLooping(!widget.controller.value.isLooping);
-            });
-          },
-          child: Icon(
-            widget.controller.value.isLooping ? Icons.circle : Icons.loop,
-          ),
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          widget.controller.setLooping(!widget.controller.value.isLooping);
+        });
+      },
+      child: Icon(
+        widget.controller.value.isLooping ? Icons.loop : Icons.loop_outlined,
+        size: 16.0,
+      ),
     );
   }
 }
@@ -120,70 +262,34 @@ class ChangeSpeedWidget extends StatefulWidget {
 }
 
 class _ChangeSpeedWidgetState extends State<ChangeSpeedWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              widget.controller.setPlaybackSpeed(0.5);
-            });
-          },
-          child: const Text('0.5x'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              widget.controller.setPlaybackSpeed(1);
-            });
-          },
-          child: const Text('1x'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              widget.controller.setPlaybackSpeed(1.5);
-            });
-          },
-          child: const Text('1.5x'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              widget.controller.setPlaybackSpeed(2);
-            });
-          },
-          child: const Text('2x'),
-        ),
-      ],
-    );
+  getNextSpeed() {
+    if (widget.controller.value.playbackSpeed == 1.0) {
+      return 1.25;
+    } else if (widget.controller.value.playbackSpeed == 1.25) {
+      return 1.5;
+    } else if (widget.controller.value.playbackSpeed == 1.5) {
+      return 1.75;
+    } else if (widget.controller.value.playbackSpeed == 1.75) {
+      return 2.0;
+    } else {
+      return 1.0;
+    }
   }
-}
 
-class VideoSlider extends StatefulWidget {
-  const VideoSlider(
-      {super.key, required this.controller, required this.position});
-  final VideoPlayerController controller;
-  final double position;
-
-  @override
-  State<VideoSlider> createState() => _VideoSliderState();
-}
-
-class _VideoSliderState extends State<VideoSlider> {
   @override
   Widget build(BuildContext context) {
-    return Slider(
-      value: widget.position,
-      onChanged: (value) {
+    return TextButton(
+      //  without any padding
+      onPressed: () {
         setState(() {
-          widget.controller.seekTo(Duration(seconds: value.toInt()));
+          widget.controller.setPlaybackSpeed(getNextSpeed());
         });
       },
-      min: 0,
-      max: widget.controller.value.duration.inSeconds.toDouble(),
+      child: Text('${widget.controller.value.playbackSpeed}x',
+          style: TextStyle(
+              fontSize: 7.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.white)),
     );
   }
 }
@@ -258,25 +364,6 @@ class _OptionsWidgetState extends State<OptionsWidget> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class VideoView extends StatelessWidget {
-  const VideoView({
-    super.key,
-    required VideoPlayerController controller,
-  }) : _controller = controller;
-
-  final VideoPlayerController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(
-        _controller,
-      ),
     );
   }
 }

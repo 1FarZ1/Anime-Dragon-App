@@ -1,8 +1,8 @@
-import 'package:anime_slayer/anime_model.dart';
+import 'package:anime_slayer/features/animes/anime_model.dart';
 import 'package:anime_slayer/consts/endpoints.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'providers/dio.dart';
+import '../../providers/dio.dart';
 
 final animesControllerProvider =
     StateNotifierProvider<AnimeController, AnimeState>((ref) {
