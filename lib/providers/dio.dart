@@ -28,7 +28,7 @@ class DioClient {
   DioClient(this._dio, this.pref, this.token) {
     // AppLogger.logInfo('Got token: $token');
 
-    _dio.options.baseUrl = EndPoints.baseUrl;
+    _dio.options.baseUrl = EndPoints.prodBaseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 5000);
     _dio.options.receiveTimeout = const Duration(seconds: 3000);
     _dio.options.headers = {

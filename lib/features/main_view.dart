@@ -14,14 +14,13 @@ class MainView extends ConsumerWidget {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              // Scaffold.of(context).openDrawer();
+              Scaffold.of(context).openDrawer();
             },
           ),
           title: Text('اخر التحديثات',
               style: TextStyle(
                 fontSize: 18.sp,
               )),
-          // actions for seach and  report issue
           actions: [
             IconButton(
               icon: const Icon(Icons.search),
@@ -30,7 +29,6 @@ class MainView extends ConsumerWidget {
               },
             ),
 
-            // switch grid and list view
             IconButton(
               icon: const Icon(Icons.grid_view),
               onPressed: () {
