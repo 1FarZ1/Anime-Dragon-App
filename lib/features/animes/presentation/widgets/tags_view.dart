@@ -14,7 +14,7 @@ class TagsView extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SizedBox(
-        height: 40.h,
+        height: 25.h,
         child: ListView(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,

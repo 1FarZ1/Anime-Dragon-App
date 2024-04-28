@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'anime_drawer.dart';
+
 class MainView extends ConsumerWidget {
   MainView({super.key});
 
@@ -54,71 +56,5 @@ class MainView extends ConsumerWidget {
             Expanded(child: AnimesView()),
           ],
         ));
-  }
-}
-
-class AnimeDrawer extends StatelessWidget {
-  const AnimeDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: AppColors.scaffoldBackgroundColor,
-      child: ListView(
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: AppColors.primaryColor,
-            ),
-            child: Column(
-              children: [
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/avatar.png'),
-                ),
-                10.verticalSpace,
-                Text(
-                  'اسم المستخدم',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            title: const Text('الرئيسية'),
-            onTap: () {
-              // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-            },
-          ),
-          ListTile(
-            title: const Text('المفضلة'),
-            onTap: () {
-              // Navigator.of(context).pushNamedAndRemoveUntil('/favorites', (route) => false);
-            },
-          ),
-          ListTile(
-            title: const Text('التحديثات'),
-            onTap: () {
-              // Navigator.of(context).pushNamedAndRemoveUntil('/updates', (route) => false);
-            },
-          ),
-          ListTile(
-            title: const Text('الاعدادات'),
-            onTap: () {
-              // Navigator.of(context).pushNamedAndRemoveUntil('/settings', (route) => false);
-            },
-          ),
-          ListTile(
-            title: const Text('تسجيل الخروج'),
-            onTap: () {
-              // ref.read(authControllerProvider.notifier).signOut();
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

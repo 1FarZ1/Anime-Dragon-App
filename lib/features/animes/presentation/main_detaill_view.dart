@@ -20,6 +20,7 @@ class MainDetaillView extends StatelessWidget {
           StatsSection(anime: anime),
           10.verticalSpace,
           DescriptionSection(anime: anime),
+          100.verticalSpace
         ],
       ),
     );
