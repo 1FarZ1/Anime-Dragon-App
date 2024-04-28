@@ -13,7 +13,7 @@ final animesRepositoryProvider = Provider<AnimesRepository>((ref) {
 abstract class AnimesRepository {
   Future<List<AnimeModel>> fetchAnimes();
   Future<List<AnimeModel>> searchAnimes(
-      {String query = "", FilterType filter = FilterType.name});
+      {String query = "", FilterType filter = FilterType.title});
 }
 
 class AnimesRepositoryImpl implements AnimesRepository {
@@ -29,7 +29,7 @@ class AnimesRepositoryImpl implements AnimesRepository {
 
   @override
   Future<List<AnimeModel>> searchAnimes(
-      {String query = "", FilterType filter = FilterType.name}) async {
+      {String query = "", FilterType filter = FilterType.title}) async {
     final response = await dioClient
         .get("${EndPoints.animesSearch}?query=$query&orderBy=${filter.name}&&order=desc");
 

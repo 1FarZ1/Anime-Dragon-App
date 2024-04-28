@@ -20,12 +20,10 @@ class SearchAnimeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = useState('');
-    final animes = ref.watch(animeSearchProvider(
-      SearchOption(
-        query: query.value,
-        filter: FilterType.rating,
-      ))
-    );
+    final animes = ref.watch(animeSearchProvider(SearchOption(
+      query: query.value,
+      filter: FilterType.title,
+    )));
     return Scaffold(
       body: Column(
         children: [
@@ -68,7 +66,7 @@ class SearchAnimeView extends HookConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.filter_list),
                   onPressed: () {
-                    //orderByFiltering 
+                    //orderByFiltering
                   },
                 ),
 
