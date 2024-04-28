@@ -1,4 +1,4 @@
-import 'package:anime_slayer/features/animes/presentation/anime_controller.dart';
+import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/features/episode/watch_episode_screen.dart';
 import 'package:flutter/material.dart';

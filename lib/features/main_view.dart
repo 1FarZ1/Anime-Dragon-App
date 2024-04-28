@@ -1,3 +1,4 @@
+import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/features/animes/presentation/widgets/anime_grid.dart';
 import 'package:anime_slayer/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,12 @@ class AnimeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: AppColors.scaffoldBackgroundColor,
       child: ListView(
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.blue,
+              color: AppColors.primaryColor,
             ),
             child: Column(
               children: [

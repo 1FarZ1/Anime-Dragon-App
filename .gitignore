@@ -41,3 +41,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.VSCodeCounter/2024-04-27_23-49-22/details.md
+.VSCodeCounter/2024-04-27_23-49-22/diff-details.md
+.VSCodeCounter/2024-04-27_23-49-22/diff.csv
+.VSCodeCounter/2024-04-27_23-49-22/diff.md
+.VSCodeCounter/2024-04-27_23-49-22/diff.txt
+.VSCodeCounter/2024-04-27_23-49-22/results.csv
+.VSCodeCounter/2024-04-27_23-49-22/results.json
+.VSCodeCounter/2024-04-27_23-49-22/results.md
+.VSCodeCounter/2024-04-27_23-49-22/results.txt

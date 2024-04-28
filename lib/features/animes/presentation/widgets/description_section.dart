@@ -1,10 +1,13 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DescriptionSection extends StatelessWidget {
+class DescriptionSection extends HookWidget {
   DescriptionSection({
     super.key,
     required this.anime,
@@ -14,6 +17,7 @@ class DescriptionSection extends StatelessWidget {
   final tags = ['اكشن', 'مغامرة', 'كوميدي', 'دراما', 'خيال', 'شونين'];
   @override
   Widget build(BuildContext context) {
+    final isExpanded = useState(false);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       decoration: BoxDecoration(
@@ -24,13 +28,32 @@ class DescriptionSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           //TODO: add see more button
-          Text(
-            anime.description,
-            maxLines: 5,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey,
+          GestureDetector(
+            onTap: () {
+              isExpanded.value = !isExpanded.value;
+            },
+            child: RichText(
+              text: TextSpan(
+                text: !isExpanded.value
+                    ? anime.description.substring(0, 50)
+                    : anime.description,
+            
+
+
+
+                children: [
+                  TextSpan(
+                    text: isExpanded.value ? "" : "...",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    //   recognizer: TapGestureRecognizer()
+                    //       ..onTap = () => isExpanded.value = !isExpanded.value,
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -63,3 +86,7 @@ class DescriptionSection extends StatelessWidget {
     );
   }
 }
+
+
+
+

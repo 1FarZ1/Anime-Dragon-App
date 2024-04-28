@@ -32,6 +32,7 @@ class AnimeSlayer extends ConsumerWidget {
                   selectedItemColor: Colors.white,
                   unselectedItemColor: Colors.grey,
                 ),
+              
               ),
               );
         });

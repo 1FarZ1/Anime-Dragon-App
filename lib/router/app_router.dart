@@ -13,6 +13,9 @@ enum AppRoutes {
   watchEpisode,
 }
 
+
+final  isDarkProvider = StateProvider<bool>((ref) => false);
+
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     routes: [
@@ -54,3 +57,5 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+

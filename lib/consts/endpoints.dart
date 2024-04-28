@@ -5,6 +5,7 @@ class EndPoints {
   static const String prodBaseUrl =
       'https://grizzly-trusty-purely.ngrok-free.app/api';
   static const String animes = "/animes/";
+  static const String animesSearch = "/animes/search";
   static const String episodes = "/episodes/";
   static const String singleEpisode = "/episodes/episode/";
   static const String streamEpisode = "/episodes/spisode/stream/";

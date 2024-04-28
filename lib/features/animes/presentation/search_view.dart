@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:anime_slayer/features/animes/presentation/search_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'anime_controller.dart';
+import 'logic/anime_controller.dart';
+import 'logic/filter_type.dart';
 import 'widgets/anime_grid.dart';
 
 class SearchAnimeView extends HookConsumerWidget {
@@ -17,7 +20,12 @@ class SearchAnimeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = useState('');
-    final animes = ref.watch(animeSearchProvider(query.value));
+    final animes = ref.watch(animeSearchProvider(
+      SearchOption(
+        query: query.value,
+        filter: FilterType.rating,
+      ))
+    );
     return Scaffold(
       body: Column(
         children: [
@@ -33,7 +41,7 @@ class SearchAnimeView extends HookConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    context.pop();
                   },
                 ),
                 Expanded(
@@ -59,8 +67,12 @@ class SearchAnimeView extends HookConsumerWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.filter_list),
-                  onPressed: () {},
+                  onPressed: () {
+                    //orderByFiltering 
+                  },
                 ),
+
+                //TODO:ADD this later on
                 IconButton(
                   icon: const Icon(Icons.tune),
                   onPressed: () {},
