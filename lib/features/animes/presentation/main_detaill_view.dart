@@ -12,14 +12,16 @@ class MainDetaillView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AnimeDetaillHeader(anime: anime),
-        10.verticalSpace,
-        StatsSection(anime: anime),
-        10.verticalSpace,
-        DescriptionSection(anime: anime),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          AnimeDetaillHeader(anime: anime),
+          10.verticalSpace,
+          StatsSection(anime: anime),
+          10.verticalSpace,
+          DescriptionSection(anime: anime),
+        ],
+      ),
     );
   }
 }
