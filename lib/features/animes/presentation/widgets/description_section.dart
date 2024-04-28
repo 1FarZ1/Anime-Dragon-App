@@ -14,7 +14,26 @@ class DescriptionSection extends HookWidget {
   });
 
   final AnimeModel anime;
-  final tags = ['اكشن', 'مغامرة', 'كوميدي', 'دراما', 'خيال', 'شونين'];
+  final tags = [
+    'اكشن',
+    'مغامرة',
+    'كوميدي',
+    'دراما',
+    'خيال',
+    'شونين',
+    'دراما',
+    'خيال',
+    'شونين',
+    'دراما',
+    'خيال',
+    'شونين',
+    'دراما',
+    'خيال',
+    'شونين',
+    'دراما',
+    'خيال',
+    'شونين',
+  ];
   @override
   Widget build(BuildContext context) {
     final isExpanded = useState(false);
@@ -34,13 +53,9 @@ class DescriptionSection extends HookWidget {
             },
             child: RichText(
               text: TextSpan(
-                text: !isExpanded.value
-                    ? anime.description.substring(0, 50)
+                text: !isExpanded.value && anime.description.length > 200
+                    ? anime.description.substring(0, 200)
                     : anime.description,
-            
-
-
-
                 children: [
                   TextSpan(
                     text: isExpanded.value ? "" : "...",
@@ -49,8 +64,6 @@ class DescriptionSection extends HookWidget {
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                     ),
-                    //   recognizer: TapGestureRecognizer()
-                    //       ..onTap = () => isExpanded.value = !isExpanded.value,
                   ),
                 ],
               ),
@@ -58,35 +71,36 @@ class DescriptionSection extends HookWidget {
           ),
 
           5.verticalSpace,
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.end,
-            textDirection: TextDirection.rtl,
-            children: [
-              ...tags.map((e) {
-                return Container(
-                  margin: EdgeInsets.only(right: 5.w, bottom: 10.h),
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff3A424D),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Text(
-                    e,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
+          SizedBox(
+            height: 40.h,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                ...tags.map((e) {
+                  return Container(
+                    margin: EdgeInsets.only(right: 5.w, bottom: 10.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff3A424D),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
-                  ),
-                );
-              })
-            ],
-          )
+                    child: Text(
+                      e,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );  
+                })
+              ],
+            ),
+          ),
+          //TODO: add the detaills of studio in here 
         ],
       ),
     );
   }
 }
-
-
-
-

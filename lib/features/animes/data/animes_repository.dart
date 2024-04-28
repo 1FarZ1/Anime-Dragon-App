@@ -1,4 +1,3 @@
-import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:anime_slayer/providers/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
