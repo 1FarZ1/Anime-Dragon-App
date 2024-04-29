@@ -11,6 +11,7 @@ class AnimeModel {
   final int lastEpisode;
   final int minAge;
   final DateTime releaseDate;
+  final String source;
   AnimeModel({
     required this.id,
     required this.title,
@@ -21,6 +22,7 @@ class AnimeModel {
     required this.lastEpisode,
     required this.minAge,
     required this.releaseDate,
+    required this.source,
   });
 
   AnimeModel copyWith({
@@ -33,6 +35,7 @@ class AnimeModel {
     int? lastEpisode,
     int? minAge,
     DateTime? releaseDate,
+    String? source,
   }) {
     return AnimeModel(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class AnimeModel {
       lastEpisode: lastEpisode ?? this.lastEpisode,
       minAge: minAge ?? this.minAge,
       releaseDate: releaseDate ?? this.releaseDate,
+      source: source ?? this.source,
     );
   }
 
@@ -71,8 +75,8 @@ class AnimeModel {
       isEnded: map['Ended'] as bool,
       lastEpisode: map['lastEpisode'] as int,
       minAge: map['minAge'] as int,
-      releaseDate:
-          DateTime.parse(map['releaseDate'] as String),
+      source: map['source'] as String,
+      releaseDate: DateTime.parse(map['releaseDate'] as String),
     );
   }
 
@@ -98,6 +102,7 @@ class AnimeModel {
         other.isEnded == isEnded &&
         other.lastEpisode == lastEpisode &&
         other.minAge == minAge &&
+        other.source == source &&
         other.releaseDate == releaseDate;
   }
 
@@ -111,6 +116,7 @@ class AnimeModel {
         isEnded.hashCode ^
         lastEpisode.hashCode ^
         minAge.hashCode ^
+        source.hashCode ^
         releaseDate.hashCode;
   }
 }
