@@ -1,6 +1,7 @@
 class EndPoints {
   const EndPoints._();
-
+  static const String imagesBaseUrl =
+      'https://grizzly-trusty-purely.ngrok-free.app';
   static const String baseUrl = "http://192.168.43.176:5500/api";
   static const String prodBaseUrl =
       'https://grizzly-trusty-purely.ngrok-free.app/api';

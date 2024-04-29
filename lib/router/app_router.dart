@@ -1,5 +1,6 @@
 import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.dart';
 import 'package:anime_slayer/features/animes/presentation/search_view.dart';
+import 'package:anime_slayer/features/auth/presentation/auth_screen.dart';
 import 'package:anime_slayer/features/main_view.dart';
 import 'package:anime_slayer/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoutes.search.name,
         pageBuilder: (context, state) {
           return MaterialPage(child: SearchAnimeView());
+        },
+      ),
+      GoRoute(
+        path: '/auth',
+        name: AppRoutes.auth.name,
+        pageBuilder: (context, state) {
+          return MaterialPage(child: AuthScreen());
         },
       ),
       GoRoute(

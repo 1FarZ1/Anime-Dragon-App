@@ -1,4 +1,8 @@
-extension X on String {}
+import 'package:anime_slayer/consts/endpoints.dart';
+
+extension X on String {
+  String get toImageUrl => EndPoints.imagesBaseUrl + this;
+}
 
 extension Y on DateTime {
   String get toSimpleDate => toIso8601String().split('T').first;

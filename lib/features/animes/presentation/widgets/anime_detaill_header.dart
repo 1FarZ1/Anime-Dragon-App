@@ -59,7 +59,7 @@ class AnimeDetaillHeader extends StatelessWidget {
               ),
               5.verticalSpace,
               Text(
-                anime.releaseDate.toSimpleDate,
+                anime.releaseDate.timeSaiontime,
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w400,
