@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class AnimeSlayer extends ConsumerWidget {
   const AnimeSlayer({super.key});
 
@@ -15,11 +14,15 @@ class AnimeSlayer extends ConsumerWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return MaterialApp.router(
-            routerConfig: ref.watch(appRouterProvider),
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: MaterialApp.router(
+              routerConfig: ref.watch(appRouterProvider),
               title: 'Anime Slayer',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
+                // direction of text
+
                 brightness: Brightness.dark,
                 primaryColor: Colors.black,
                 scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
@@ -32,9 +35,9 @@ class AnimeSlayer extends ConsumerWidget {
                   selectedItemColor: Colors.white,
                   unselectedItemColor: Colors.grey,
                 ),
-              
               ),
-              );
+            ),
+          );
         });
   }
 }

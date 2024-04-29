@@ -36,6 +36,17 @@ class DescriptionSection extends HookWidget {
     'خيال',
     'شونين',
   ];
+  String getMinimazedText(String text) {
+    // if  the last world is half a word then remove it
+    if (text.length > 200) {
+      final lastWord = text.substring(200).split(' ')[0];
+      if (lastWord.length < 3) {
+        return text.substring(0, 200 - lastWord.length);
+      }
+    }
+    return text.substring(0, 200);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isExpanded = useState(false);
@@ -46,23 +57,23 @@ class DescriptionSection extends HookWidget {
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           GestureDetector(
             onTap: () {
               isExpanded.value = !isExpanded.value;
             },
             child: RichText(
+              textDirection: TextDirection.rtl,
               text: TextSpan(
                 text: !isExpanded.value && anime.description.length > 200
-                    ? anime.description.substring(0, 200)
+                    ? getMinimazedText(anime.description)
                     : anime.description,
                 children: [
                   TextSpan(
                     text: isExpanded.value ? "" : "...",
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.sp,
+                      color: Colors.white,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -80,7 +91,7 @@ class DescriptionSection extends HookWidget {
               children: [
                 DescrptionInfoColumn(
                   items: [
-                    const InfoItem(name: 'المصدر', value: 'مانجا'),
+                    InfoItem(name: 'المصدر', value: anime.source),
                     10.verticalSpace,
                     InfoItem(
                         name: 'عرض من', value: anime.releaseDate.toSimpleDate),
