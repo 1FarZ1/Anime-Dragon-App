@@ -37,7 +37,6 @@ class DescriptionSection extends HookWidget {
     'شونين',
   ];
   String getMinimazedText(String text) {
-    // if  the last world is half a word then remove it
     if (text.length > 200) {
       final lastWord = text.substring(200).split(' ')[0];
       if (lastWord.length < 3) {

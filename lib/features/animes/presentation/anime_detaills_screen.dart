@@ -51,7 +51,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
                   EpisodesView(
                     numberOfEpisodes: anime.lastEpisode,
                   ),
-                  const Center(child: Text('الاحصائيات')),
+                  const Center(child: Text('Released Soon ')),
                   const Center(child: Text('الشخصيات')),
                 ],
               ),
