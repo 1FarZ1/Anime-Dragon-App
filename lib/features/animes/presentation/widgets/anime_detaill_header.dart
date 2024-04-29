@@ -1,3 +1,4 @@
+import 'package:anime_slayer/extensions/stings.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,7 +59,7 @@ class AnimeDetaillHeader extends StatelessWidget {
               ),
               5.verticalSpace,
               Text(
-                'ربيع 2024',
+                anime.releaseDate.toSimpleDate,
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w400,
@@ -66,7 +67,8 @@ class AnimeDetaillHeader extends StatelessWidget {
               ),
               5.verticalSpace,
               Text(
-                'مسلسل | +13',
+                'مسلسل | +${anime.minAge}',
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
