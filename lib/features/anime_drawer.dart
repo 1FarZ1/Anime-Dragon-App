@@ -25,7 +25,7 @@ class AnimeDrawer extends StatelessWidget {
                   radius: 20.r,
                   backgroundImage: false
                       ? (const NetworkImage(image) as ImageProvider<Object>)
-                      : const AssetImage('assets/avatar.png'),
+                      : const AssetImage('assets/default.png'),
                 ),
                 10.verticalSpace,
                 Text(

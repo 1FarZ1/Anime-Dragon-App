@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:anime_slayer/consts/colors.dart';
-import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/features/animes/presentation/search_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,7 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'logic/anime_controller.dart';
 import 'logic/filter_type.dart';
-import 'widgets/anime_grid.dart';
+import 'results_view.dart';
 
 class SearchAnimeView extends HookConsumerWidget {
   SearchAnimeView({super.key});
@@ -20,9 +19,10 @@ class SearchAnimeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = useState('');
+    final currentFilter = useState(FilterType.title);
     final animes = ref.watch(animeSearchProvider(SearchOption(
       query: query.value,
-      filter: FilterType.title,
+      filter: currentFilter.value,
     )));
     return Scaffold(
       body: Column(
@@ -65,8 +65,20 @@ class SearchAnimeView extends HookConsumerWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.filter_list),
-                  onPressed: () {
-                    //orderByFiltering
+                  onPressed: () async {
+                    // show dialog
+                    final result = await showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return SearchOptionDialog(
+                          currentFilter: currentFilter.value,
+                        );
+                      },
+                    );
+                    if (result != null) {
+                      currentFilter.value = result as FilterType;
+                    }
                   },
                 ),
 
@@ -78,32 +90,72 @@ class SearchAnimeView extends HookConsumerWidget {
               ],
             ),
           ),
-
-          // search result
-          ResultsView(
-            animes: animes.asData?.value ?? [],
-          ),
+          !animes.isLoading
+              ? ResultsView(
+                  animes: animes.asData?.value ?? [],
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
         ],
       ),
     );
   }
 }
 
-class ResultsView extends StatelessWidget {
-  const ResultsView({
+class SearchOptionDialog extends HookConsumerWidget {
+  const SearchOptionDialog({
     super.key,
-    required this.animes,
+    required this.currentFilter,
   });
 
-  final List<AnimeModel> animes;
+  final FilterType currentFilter;
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: AnimesGridView(
-        animes: animes,
-        onRefresh: () async {},
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentFilterDialog = useState<FilterType>(currentFilter);
+    return AlertDialog(
+      backgroundColor: AppColors.scaffoldBackgroundColor,
+      title: const Text('الترتيب حسب'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          RadioListTile<FilterType>(
+            title: const Text('الاسم'),
+            value: FilterType.title,
+            groupValue: currentFilterDialog.value,
+            onChanged: (val) {
+              currentFilterDialog.value = val!;
+            },
+          ),
+          RadioListTile<FilterType>(
+            title: const Text('تاريخ الاصدار'),
+            value: FilterType.releaseDate,
+            groupValue: currentFilterDialog.value,
+            onChanged: (val) {
+              currentFilterDialog.value = val!;
+            },
+          ),
+          RadioListTile<FilterType>(
+            title: const Text('التقييم'),
+            value: FilterType.rating,
+            groupValue: currentFilterDialog.value,
+            onChanged: (val) {
+              currentFilterDialog.value = val!;
+            },
+          ),
+        ],
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            context.pop(
+              currentFilterDialog.value,
+            );
+          },
+          child: const Text('تم'),
+        ),
+      ],
     );
   }
 }

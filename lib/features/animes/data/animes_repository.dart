@@ -23,18 +23,15 @@ class AnimesRepositoryImpl implements AnimesRepository {
   @override
   Future<List<AnimeModel>> fetchAnimes() async {
     final response = await dioClient.get(EndPoints.animes);
-    return (response.data as List).map((e) => AnimeModel.fromJson(e)).toList();
+    return (response.data as List).map((e) => AnimeModel.fromMap(e)).toList();
   }
 
   @override
   Future<List<AnimeModel>> searchAnimes(
       {String query = "", FilterType filter = FilterType.title}) async {
-    final response = await dioClient
-        .get("${EndPoints.animesSearch}?query=$query&orderBy=${filter.name}&&order=desc");
+    final response = await dioClient.get(
+        "${EndPoints.animesSearch}?query=$query&orderBy=${filter.name}&&order=desc");
 
-    return (response.data as List).map((e) => AnimeModel.fromJson(e)).toList();
-  
+    return (response.data as List).map((e) => AnimeModel.fromMap(e)).toList();
   }
-
-
 }

@@ -1,3 +1,4 @@
+import 'package:anime_slayer/extensions/stings.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,6 @@ class DescriptionSection extends HookWidget {
               ),
             ),
           ),
-
           10.verticalSpace,
           TagsView(tags: tags),
           5.verticalSpace,
@@ -82,7 +82,8 @@ class DescriptionSection extends HookWidget {
                   items: [
                     const InfoItem(name: 'المصدر', value: 'مانجا'),
                     10.verticalSpace,
-                    const InfoItem(name: 'عرض من', value: '2024-04-01'),
+                    InfoItem(
+                        name: 'عرض من', value: anime.releaseDate.toSimpleDate),
                     10.verticalSpace,
                     InfoItem(
                       name: 'الاستديو',
@@ -105,11 +106,16 @@ class DescriptionSection extends HookWidget {
                 // anime.episodes.length
                 10.horizontalSpace,
                 DescrptionInfoColumn(items: [
-                  const InfoItem(name: 'عدد الحلقات', value: '220'),
+                  InfoItem(
+                      name: 'عدد الحلقات', value: anime.lastEpisode.toString()),
                   10.verticalSpace,
                   const InfoItem(name: 'الى', value: '?'),
                   10.verticalSpace,
-                  const InfoItem(name: ' العنوان بالانجليزي', value: 'Naruto'),
+                  InfoItem(
+                    name: ' العنوان بالانجليزي',
+                    value: anime.title,
+                    haveConstrainedDim: true,
+                  ),
                 ])
               ],
             ),

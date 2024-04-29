@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:developer';
 import 'package:anime_slayer/features/animes/presentation/search_option.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anime_slayer/features/animes/data/animes_repository.dart';
@@ -44,6 +45,7 @@ class AnimeController extends StateNotifier<AnimeState> {
       final animes = await animesRepository.fetchAnimes();
       state = state.copyWith(animes: AsyncValue.data(animes));
     } catch (e, st) {
+      log('Error while fetching animes', error: e, stackTrace: st);
       state = state.copyWith(animes: AsyncValue.error(e, st));
     }
   }
