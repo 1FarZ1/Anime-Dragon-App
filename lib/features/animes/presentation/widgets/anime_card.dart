@@ -1,8 +1,11 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:anime_slayer/router/app_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../router/interfaces.dart';
 import '../anime_detaills_screen.dart';
 
 class AnimeCard extends StatelessWidget {
@@ -13,9 +16,10 @@ class AnimeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AnimeDetaillsScreen(animeId: anime.id),
-        ));
+        context.pushNamed(AppRoutes.animeDetails.name,
+            extra: anime.id
+        );
+            
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
