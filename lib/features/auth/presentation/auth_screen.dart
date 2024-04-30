@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthScreen extends HookWidget {
   const AuthScreen({super.key});
@@ -16,7 +17,7 @@ class AuthScreen extends HookWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final nameController = useTextEditingController();
-    final avatar = useState<File?>(null);
+    final avatar = useState<XFile?>(null);
 
     void submit() {
       final isValid = formKey.currentState!.validate();
@@ -24,10 +25,32 @@ class AuthScreen extends HookWidget {
         return;
       }
       formKey.currentState!.save();
+
+      if (avatar.value == null) {
+        // show snackbar error
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('الرجاء اختيار صورة شخصية'),
+          ),
+        );
+
+        return;
+      }
+
       if (isLogin.value) {
         // login
       } else {
         // register
+      }
+    }
+
+    pickImage() async {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        avatar.value = image;
+      } else {
+        print('no image selected');
       }
     }
 
@@ -53,6 +76,27 @@ class AuthScreen extends HookWidget {
               Text(isLogin.value ? 'تسجيل الدخول' : 'انشاء حساب جديد',
                   style: Theme.of(context).textTheme.bodyLarge),
               if (!isLogin.value)
+                // a container rounded , if clicked to picka profile picture , its required
+                GestureDetector(
+                  onTap: pickImage,
+                  child: CircleAvatar(
+                    radius: 50.r,
+                    backgroundColor: AppColors.primaryColor,
+                    backgroundImage: avatar.value != null
+                        ? FileImage(
+                            File(avatar.value!.path),
+                          )
+                        : null,
+                    child: avatar.value == null
+                        ? const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.white,
+                          )
+                        : null,
+                  ),
+                ),
+              if (!isLogin.value)
                 TextFormField(
                   controller: nameController,
                   decoration: const InputDecoration(labelText: 'الاسم'),
@@ -72,7 +116,6 @@ class AuthScreen extends HookWidget {
                 validator: (value) =>
                     value!.isEmpty ? 'الرجاء ادخال كلمة المرور' : null,
               ),
-              if (!isLogin.value) const Text('file fieldas'),
               30.verticalSpace,
               ElevatedButton(
                 onPressed: submit,

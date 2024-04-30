@@ -55,12 +55,13 @@ class DioClient {
   }
 
   Future<Response> post(String path,
-      {Map<String, dynamic>? queryParameters, required data}) async {
+      {Map<String, dynamic>? queryParameters, required data, contentType = Headers.jsonContentType}) async {
     try {
       final response = await _dio.post(
         path,
         queryParameters: queryParameters,
         data: data,
+        options: Options(contentType:contentType)
       );
       return response;
     } on DioException {
