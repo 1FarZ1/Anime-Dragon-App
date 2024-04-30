@@ -18,6 +18,31 @@ class FavoriteScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: const OpenDrawerButton(),
         title: const Text('المفضلة'),
+        actions: [
+          // saech
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // context.pushNamed(
+              //   AppRoutes.search.name,
+              // );
+            },
+          ),
+          // list view
+          IconButton(
+            icon: const Icon(Icons.grid_view),
+            onPressed: () {
+              // ref.read(animeViewControllerProvider.notifier).switchView();
+            },
+          ),
+
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {
+              // showReportIssue(context);
+            },
+          ),
+        ],
       ),
       body: AnimesView(
         animes: animes,
@@ -45,9 +70,7 @@ class OpenDrawerButton extends StatelessWidget {
       return IconButton(
         icon: const Icon(Icons.menu),
         onPressed: () {
-          Scaffold.of(context).openDrawer(
-            
-          );
+          Scaffold.of(context).openDrawer();
         },
       );
     });
