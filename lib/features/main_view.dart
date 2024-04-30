@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import 'anime_drawer.dart';
+import 'animes/presentation/logic/anime_controller.dart';
 
 class MainView extends ConsumerWidget {
   MainView({super.key});
@@ -14,6 +15,8 @@ class MainView extends ConsumerWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final animes = ref.watch(animesControllerProvider).animes;
+
     return Scaffold(
         key: _scaffoldKey,
         drawer: const AnimeDrawer(),
@@ -51,9 +54,12 @@ class MainView extends ConsumerWidget {
             ),
           ],
         ),
-        body: const Column(
+        body: Column(
           children: [
-            Expanded(child: AnimesView()),
+            Expanded(
+                child: AnimesView(
+              animes: animes,
+            )),
           ],
         ));
   }

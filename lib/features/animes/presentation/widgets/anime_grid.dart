@@ -10,13 +10,12 @@ import 'anime_card.dart';
 
 //TODO: I really need to fix the  auth logic in this app
 class AnimesView extends ConsumerWidget {
-  const AnimesView({
-    super.key,
-  });
+  const AnimesView({super.key, required this.animes});
+
+  final AsyncValue<List<AnimeModel>> animes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final animes = ref.watch(animesControllerProvider).animes;
     return animes.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(

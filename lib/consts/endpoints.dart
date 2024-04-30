@@ -5,8 +5,14 @@ class EndPoints {
   static const String baseUrl = "http://192.168.43.176:5500/api";
   static const String prodBaseUrl =
       'https://grizzly-trusty-purely.ngrok-free.app/api';
+
+
+      
   static const String animes = "/animes/";
   static const String animesSearch = "/animes/search";
+  static const String favoritesAnime = "/favorite/user";
+  static const String favoriteOperation = "/favorite/";
+  
   static const String episodes = "/episodes/";
   static const String singleEpisode = "/episodes/episode/";
   static const String streamEpisode = "/episodes/spisode/stream/";
