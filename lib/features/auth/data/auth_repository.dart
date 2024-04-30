@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -68,10 +69,13 @@ class AuthRepository {
     }
   }
 
-  Future<Response> fetchUserInfo() async {
+  Future fetchUserInfo() async {
     try {
       final response = await remoteDataSource.fetchUserInfo();
-      return response;
+      if(response.statusCode == 200) {
+        return UserModel.fromMap(response.data);
+      }
+      throw Exception('Failed to fetch user info');
     } catch (e) {
       rethrow;
     }

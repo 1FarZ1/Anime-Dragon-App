@@ -1,7 +1,7 @@
 import 'package:anime_slayer/consts/endpoints.dart';
 
 extension X on String {
-  String get toImageUrl => EndPoints.imagesBaseUrl + this;
+  String get toImageUrl => '${EndPoints.imagesBaseUrl}/$this';
 }
 
 extension Y on DateTime {

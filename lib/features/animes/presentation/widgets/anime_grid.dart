@@ -7,6 +7,8 @@ import 'package:responsive_grid_list/responsive_grid_list.dart';
 import 'anime_card.dart';
 
 //TODO: Add AsyncValue Widget
+
+//TODO: I really need to fix the  auth logic in this app
 class AnimesView extends ConsumerWidget {
   const AnimesView({
     super.key,

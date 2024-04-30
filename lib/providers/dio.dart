@@ -1,31 +1,29 @@
-
-
-
-
 import 'package:anime_slayer/consts/endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../features/auth/data/local_auth_data_source.dart';
 import 'shared_pref.dart';
 
 final dioProvider = Provider<Dio>((ref) => Dio());
 
+
+final tokenProvider = StateProvider<String?>((ref) =>
+    ref.watch(sharedPrefProvider).requireValue.getString(Pref.token.name));
+
+
 final dioClientProvider = Provider<DioClient>((ref) => DioClient(
     ref.watch(dioProvider),
-    ref.watch(sharedPrefProvider).requireValue,
-    null
-    // ref.watch(tokenProvider)
-    
-    ));
+    // ref.watch(sharedPrefProvider).requireValue,
+    ref.watch(tokenProvider)));
 
 class DioClient {
   final Dio _dio;
-  final SharedPreferences pref;
+  // final SharedPreferences pref;
   final String? token;
 
-  DioClient(this._dio, this.pref, this.token) {
+  DioClient(this._dio, this.token) {
     // AppLogger.logInfo('Got token: $token');
 
     _dio.options.baseUrl = EndPoints.prodBaseUrl;
@@ -55,14 +53,14 @@ class DioClient {
   }
 
   Future<Response> post(String path,
-      {Map<String, dynamic>? queryParameters, required data, contentType = Headers.jsonContentType}) async {
+      {Map<String, dynamic>? queryParameters,
+      required data,
+      contentType = Headers.jsonContentType}) async {
     try {
-      final response = await _dio.post(
-        path,
-        queryParameters: queryParameters,
-        data: data,
-        options: Options(contentType:contentType)
-      );
+      final response = await _dio.post(path,
+          queryParameters: queryParameters,
+          data: data,
+          options: Options(contentType: contentType));
       return response;
     } on DioException {
       rethrow;
@@ -104,5 +102,3 @@ class DioClient {
     }
   }
 }
-
-

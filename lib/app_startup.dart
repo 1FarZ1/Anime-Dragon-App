@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
+
 import 'app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +13,7 @@ final appStartupProvider = FutureProvider<void>((ref) async {
     ref.invalidate(sharedPrefProvider);
   });
   await ref.watch(sharedPrefProvider.future);
+  await ref.watch(userProvider.notifier).getUser();
 });
 
 class AppStartupWidget extends ConsumerWidget {

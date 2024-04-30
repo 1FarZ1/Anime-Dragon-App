@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/features/auth/data/auth_repository.dart';
 import 'package:anime_slayer/features/auth/data/login_request_model.dart';
+import 'package:anime_slayer/features/auth/presentation/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,7 @@ class AuthScreen extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final nameController = useTextEditingController();
     final avatar = useState<XFile?>(null);
-    final authRepository = ref.watch(authRepositoryProvider);
+    final authController = ref.watch(authControllerProvider.notifier);
     void submit() {
       final isValid = formKey.currentState!.validate();
       if (!isValid) {
@@ -32,7 +33,6 @@ class AuthScreen extends HookConsumerWidget {
       formKey.currentState!.save();
 
       if (avatar.value == null && !isLogin.value) {
-        // show snackbar error
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('الرجاء اختيار صورة شخصية'),
@@ -43,13 +43,13 @@ class AuthScreen extends HookConsumerWidget {
       }
 
       if (isLogin.value) {
-        authRepository.login(
+        authController.login(
             data: LoginRequestModel(
           email: emailController.text,
           password: passwordController.text,
         ));
       } else {
-        authRepository.register(
+        authController.register(
           data: RegisterRequestModel(
             username: nameController.text,
             email: emailController.text,
@@ -69,6 +69,25 @@ class AuthScreen extends HookConsumerWidget {
         print('no image selected');
       }
     }
+
+    ref.listen(authControllerProvider, ((previous, next) {
+      if (next.error == null) {
+        // show snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('تم تسجيل الدخول بنجاح'),
+          ),
+        );
+      }
+
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('حدث خطأ ما'),
+          ),
+        );
+      }
+    }));
 
     return Scaffold(
       // back buttonm
