@@ -1,8 +1,10 @@
-import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
-import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
+
+import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
+import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 
 import 'anime_card.dart';
 
@@ -10,9 +12,18 @@ import 'anime_card.dart';
 
 //TODO: I really need to fix the  auth logic in this app
 class AnimesView extends ConsumerWidget {
-  const AnimesView({super.key, required this.animes});
+  const AnimesView({
+    super.key,
+    required this.animes,
+    required this.onRefresh,
+    required this.onError,
+  });
 
   final AsyncValue<List<AnimeModel>> animes;
+
+  final Future<void> Function() onRefresh;
+
+  final Function() onError;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +35,7 @@ class AnimesView extends ConsumerWidget {
                 children: [
                   Text('Error: $e'),
                   ElevatedButton(
-                    onPressed: () {
-                      ref.read(animesControllerProvider.notifier).fetchAnimes();
-                    },
+                    onPressed: onError,
                     child: const Text('Retry'),
                   ),
                 ],
@@ -34,9 +43,7 @@ class AnimesView extends ConsumerWidget {
             ),
         data: (animes) => AnimesGridView(
               animes: animes,
-              onRefresh: () async {
-                ref.invalidate(animesControllerProvider);
-              },
+              onRefresh: onRefresh,
             ));
   }
 }

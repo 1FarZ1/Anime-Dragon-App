@@ -43,7 +43,7 @@ class AnimesRepositoryImpl implements AnimesRepository {
   @override
   Future<List<AnimeModel>> getFavoriteAnime() async {
     final response = await dioClient.get(EndPoints.favoritesAnime);
-    return (response as List).map((e) => AnimeModel.fromMap(e)).toList();
+    return (response.data as List).map((e) => AnimeModel.fromMap(e)).toList();
   }
 
   @override

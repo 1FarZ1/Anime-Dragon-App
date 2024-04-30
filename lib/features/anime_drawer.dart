@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/extensions/stings.dart';
 import 'package:anime_slayer/router/app_router.dart';
@@ -19,16 +21,21 @@ enum DrawerOption {
   settings,
 }
 
+final currentSelectedDrawerItem =
+    StateProvider<DrawerOption>((ref) => DrawerOption.home);
+
 class AnimeDrawer extends HookConsumerWidget {
   const AnimeDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selected = useState<DrawerOption>(
-      DrawerOption.home,
-    );
-
     final user = ref.watch(userProvider);
+    final selected = ref.watch(currentSelectedDrawerItem);
+
+    void changeSelectedItem(DrawerOption item) {
+      ref.read(currentSelectedDrawerItem.notifier).update((state) => item);
+    }
+
     return Drawer(
       backgroundColor: AppColors.scaffoldBackgroundColor,
       child: ListView(
@@ -67,38 +74,40 @@ class AnimeDrawer extends HookConsumerWidget {
             ),
           ),
           ListTile(
-            selected: selected.value == DrawerOption.home,
+            selected: selected == DrawerOption.home,
             title: const Text('اخر التحديثات'),
             onTap: () {
-              selected.value = DrawerOption.home;
+              changeSelectedItem(DrawerOption.home);
               context.goNamed(AppRoutes.home.name);
             },
             leading: const Icon(Icons.update),
             // title on left
           ),
           ListTile(
-            selected: selected.value == DrawerOption.favorite,
+            selected: selected == DrawerOption.favorite,
             title: const Text('المفضلة'),
             onTap: () {
-              selected.value = DrawerOption.favorite;
-              // Navigator.of(context).pushNamedAndRemoveUntil('/favorites', (route) => false);
+              changeSelectedItem(DrawerOption.favorite);
+              context.goNamed(
+                AppRoutes.favorite.name,
+              );
             },
             leading: const Icon(Icons.favorite),
           ),
           ListTile(
-            selected: selected.value == DrawerOption.myList,
+            selected: selected == DrawerOption.myList,
             title: const Text('قائمتي'),
             onTap: () {
-              selected.value = DrawerOption.myList;
+              changeSelectedItem(DrawerOption.myList);
               // Navigator.of(context).pushNamedAndRemoveUntil('/updates', (route) => false);
             },
             leading: const Icon(Icons.list),
           ),
           ListTile(
-            selected: selected.value == DrawerOption.settings,
+            selected: selected == DrawerOption.settings,
             title: const Text('الاعدادات'),
             onTap: () {
-              selected.value = DrawerOption.settings;
+              changeSelectedItem(DrawerOption.settings);
               // Navigator.of(context).pushNamedAndRemoveUntil('/settings', (route) => false);
             },
             leading: const Icon(Icons.settings),

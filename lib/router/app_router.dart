@@ -2,6 +2,7 @@ import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.
 import 'package:anime_slayer/features/animes/presentation/search_view.dart';
 import 'package:anime_slayer/features/auth/presentation/auth_screen.dart';
 import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
+import 'package:anime_slayer/features/favorites/favorite_screen.dart';
 import 'package:anime_slayer/features/main_view.dart';
 import 'package:anime_slayer/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +83,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoutes.watchEpisode.name,
         pageBuilder: (context, state) {
           return const MaterialPage(child: SplashScreen());
+        },
+      ),
+      GoRoute(
+        path: '/favorite',
+        name: AppRoutes.favorite.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: FavoriteScreen());
         },
       ),
     ],

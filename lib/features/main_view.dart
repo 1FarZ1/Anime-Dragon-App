@@ -1,5 +1,6 @@
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:anime_slayer/features/animes/presentation/widgets/anime_grid.dart';
+import 'package:anime_slayer/features/favorites/favorite_screen.dart';
 import 'package:anime_slayer/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,23 +11,16 @@ import 'anime_drawer.dart';
 import 'animes/presentation/logic/anime_controller.dart';
 
 class MainView extends ConsumerWidget {
-  MainView({super.key});
+  const MainView({super.key});
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final animes = ref.watch(animesControllerProvider).animes;
 
     return Scaffold(
-        key: _scaffoldKey,
         drawer: const AnimeDrawer(),
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              _scaffoldKey.currentState!.openDrawer();
-            },
-          ),
+          leading: const OpenDrawerButton(),
           title: Text('اخر التحديثات',
               style: TextStyle(
                 fontSize: 18.sp,
@@ -59,6 +53,10 @@ class MainView extends ConsumerWidget {
             Expanded(
                 child: AnimesView(
               animes: animes,
+              onError: () => ref.invalidate(animesControllerProvider),
+              onRefresh: () async {
+                ref.invalidate(animesControllerProvider);
+              },
             )),
           ],
         ));
