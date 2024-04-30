@@ -1,24 +1,29 @@
 import 'dart:io';
 
 import 'package:anime_slayer/consts/colors.dart';
+import 'package:anime_slayer/features/auth/data/auth_repository.dart';
+import 'package:anime_slayer/features/auth/data/login_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AuthScreen extends HookWidget {
+import '../data/remote_auth_data_source.dart';
+
+class AuthScreen extends HookConsumerWidget {
   const AuthScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final isLogin = useState(true);
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final nameController = useTextEditingController();
     final avatar = useState<XFile?>(null);
-
+    final authRepository = ref.watch(authRepositoryProvider);
     void submit() {
       final isValid = formKey.currentState!.validate();
       if (!isValid) {
@@ -26,7 +31,7 @@ class AuthScreen extends HookWidget {
       }
       formKey.currentState!.save();
 
-      if (avatar.value == null) {
+      if (avatar.value == null && !isLogin.value) {
         // show snackbar error
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -38,9 +43,20 @@ class AuthScreen extends HookWidget {
       }
 
       if (isLogin.value) {
-        // login
+        authRepository.login(
+            data: LoginRequestModel(
+          email: emailController.text,
+          password: passwordController.text,
+        ));
       } else {
-        // register
+        authRepository.register(
+          data: RegisterRequestModel(
+            username: nameController.text,
+            email: emailController.text,
+            password: passwordController.text,
+            avatar: avatar.value!,
+          ),
+        );
       }
     }
 

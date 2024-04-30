@@ -32,7 +32,7 @@ class RegisterRequestModel {
 
   Map<String, dynamic> toMap() {
     return {
-      "username": username,
+      "name": username,
       "email": email,
       "password": password,
       "avatar": MultipartFile.fromFileSync(avatar.path),
@@ -55,13 +55,9 @@ class RemoteAuthDataSource {
 
   Future<Response> register({required RegisterRequestModel data}) async {
     final formData = FormData.fromMap(data.toMap());
-    final response = await _dioClient.post(
-      EndPoints.register,
-      data: formData,
-      contentType: Headers.multipartFormDataContentType
-    );
+    final response = await _dioClient.post(EndPoints.register,
+        data: formData, contentType: Headers.multipartFormDataContentType);
     return response;
-
   }
 
   Future<Response> fetchUserInfo() async {
