@@ -23,15 +23,17 @@ class StatsSection extends StatelessWidget {
         children: [
           Expanded(child: ReviewersWidget(anime: anime)),
           Expanded(child: ReviewersWidget(anime: anime, isGlobal: true)),
-          const Expanded(
+          Expanded(
               child: AddButton(
             text: 'اضافة تقييم',
             icon: Icons.star_border_outlined,
+            animeId: anime.id,
           )),
-          const Expanded(
+          Expanded(
               child: AddButton(
             text: 'قائمتي',
-            icon: Icons.add,
+            icon: Icons.playlist_add,
+            animeId: anime.id,
           )),
         ],
       ),

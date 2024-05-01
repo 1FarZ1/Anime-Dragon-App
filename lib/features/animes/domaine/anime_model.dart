@@ -75,7 +75,6 @@ class AnimeModel {
   }
 
  factory AnimeModel.fromMap(Map<String, dynamic> map) {
-    log(map.toString());
     return AnimeModel(
       id: map['id'] as int,
       title: map['title'] as String,

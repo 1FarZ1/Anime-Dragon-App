@@ -12,6 +12,9 @@ class EndPoints {
   static const String animesSearch = "/animes/search";
   static const String favoritesAnime = "/favorite/user";
   static const String favoriteOperation = "/favorite/";
+
+
+  static const String addReview = "/reviews/add";
   
   static const String episodes = "/episodes/";
   static const String singleEpisode = "/episodes/episode/";

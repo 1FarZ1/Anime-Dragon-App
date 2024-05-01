@@ -9,6 +9,33 @@ final animesRepositoryProvider = Provider<AnimesRepository>((ref) {
   return AnimesRepositoryImpl(ref.watch(dioClientProvider));
 });
 
+class AddReviewRequest {
+  final int animeId;
+  final double rating;
+
+  AddReviewRequest({
+    required this.animeId,
+    required this.rating,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'animeId': animeId,
+      'rating': rating,
+    };
+  }
+
+  AddReviewRequest copyWith({
+    int? animeId,
+    double? rating,
+  }) {
+    return AddReviewRequest(
+      animeId: animeId ?? this.animeId,
+      rating: rating ?? this.rating,
+    );
+  }
+}
+
 abstract class AnimesRepository {
   Future<List<AnimeModel>> fetchAnimes();
   Future<List<AnimeModel>> searchAnimes(
@@ -18,7 +45,8 @@ abstract class AnimesRepository {
   // add favorite
   Future<void> addFavoriteAnime(int animeId);
   Future<void> removeFavoriteAnime(int animeId);
-  
+
+  Future<void> addReviewToAnime(AddReviewRequest addReviewRequest);
 }
 
 class AnimesRepositoryImpl implements AnimesRepository {
@@ -55,5 +83,10 @@ class AnimesRepositoryImpl implements AnimesRepository {
   @override
   Future<void> removeFavoriteAnime(int animeId) async {
     await dioClient.delete("${EndPoints.favoriteOperation}/$animeId");
+  }
+
+  @override
+  Future<void> addReviewToAnime(AddReviewRequest addReviewRequest) async {
+    await dioClient.post(EndPoints.addReview, data: addReviewRequest.toMap());
   }
 }
