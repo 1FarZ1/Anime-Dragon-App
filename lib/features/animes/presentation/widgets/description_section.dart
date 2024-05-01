@@ -56,6 +56,7 @@ class DescriptionSection extends HookWidget {
         borderRadius: BorderRadius.circular(14.r),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: () {
@@ -86,7 +87,7 @@ class DescriptionSection extends HookWidget {
           Directionality(
             textDirection: TextDirection.rtl,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DescrptionInfoColumn(
                   items: [
@@ -97,24 +98,11 @@ class DescriptionSection extends HookWidget {
                     10.verticalSpace,
                     InfoItem(
                       name: 'الاستديو',
-                      valueChild: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 1.h),
-                          decoration: BoxDecoration(
-                            color: AppColors.containerColor,
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          child: Text('Studio Pierrot',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                              ))),
+                      valueChild: StudioField(anime: anime),
                     ),
                   ],
                 ),
-                20.horizontalSpace,
-                // anime.episodes.length
-                10.horizontalSpace,
+                30.horizontalSpace,
                 DescrptionInfoColumn(items: [
                   InfoItem(
                       name: 'عدد الحلقات', value: anime.lastEpisode.toString()),
@@ -133,5 +121,29 @@ class DescriptionSection extends HookWidget {
         ],
       ),
     );
+  }
+}
+
+class StudioField extends StatelessWidget {
+  const StudioField({
+    super.key,
+    required this.anime,
+  });
+
+  final AnimeModel anime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+        decoration: BoxDecoration(
+          color: AppColors.containerColor,
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Text(anime.studio.name,
+            style: TextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w500,
+            )));
   }
 }

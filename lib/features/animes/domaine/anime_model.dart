@@ -13,6 +13,7 @@ class AnimeModel {
   final int minAge;
   final DateTime releaseDate;
   final String source;
+  final StudioModel studio;
   AnimeModel({
     required this.id,
     required this.title,
@@ -24,7 +25,10 @@ class AnimeModel {
     required this.minAge,
     required this.releaseDate,
     required this.source,
+    required this.studio,
   });
+
+  
 
   AnimeModel copyWith({
     int? id,
@@ -37,6 +41,7 @@ class AnimeModel {
     int? minAge,
     DateTime? releaseDate,
     String? source,
+    StudioModel? studio,
   }) {
     return AnimeModel(
       id: id ?? this.id,
@@ -49,6 +54,7 @@ class AnimeModel {
       minAge: minAge ?? this.minAge,
       releaseDate: releaseDate ?? this.releaseDate,
       source: source ?? this.source,
+      studio: studio ?? this.studio,
     );
   }
 
@@ -63,10 +69,12 @@ class AnimeModel {
       'lastEpisode': lastEpisode,
       'minAge': minAge,
       'releaseDate': releaseDate.millisecondsSinceEpoch,
+      'source': source,
+      'studio': studio.toMap(),
     };
   }
 
-  factory AnimeModel.fromMap(Map<String, dynamic> map) {
+ factory AnimeModel.fromMap(Map<String, dynamic> map) {
     log(map.toString());
     return AnimeModel(
       id: map['id'] as int,
@@ -79,46 +87,104 @@ class AnimeModel {
       minAge: map['minAge'] as int,
       source: map['source'] as String,
       releaseDate: DateTime.parse(map['releaseDate'] as String),
+      studio: StudioModel.fromMap(map['studio'] as Map<String, dynamic>),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory AnimeModel.fromJson(String source) =>
-      AnimeModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AnimeModel.fromJson(String source) => AnimeModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'AnimeModel(id: $id, title: $title, description: $description, imageUrl: $imageUrl, rating: $rating, isEnded: $isEnded, lastEpisode: $lastEpisode, minAge: $minAge, releaseDate: $releaseDate)';
+    return 'AnimeModel(id: $id, title: $title, description: $description, imageUrl: $imageUrl, rating: $rating, isEnded: $isEnded, lastEpisode: $lastEpisode, minAge: $minAge, releaseDate: $releaseDate, source: $source, studio: $studio)';
   }
 
   @override
   bool operator ==(covariant AnimeModel other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.title == title &&
-        other.description == description &&
-        other.imageUrl == imageUrl &&
-        other.rating == rating &&
-        other.isEnded == isEnded &&
-        other.lastEpisode == lastEpisode &&
-        other.minAge == minAge &&
-        other.source == source &&
-        other.releaseDate == releaseDate;
+  
+    return 
+      other.id == id &&
+      other.title == title &&
+      other.description == description &&
+      other.imageUrl == imageUrl &&
+      other.rating == rating &&
+      other.isEnded == isEnded &&
+      other.lastEpisode == lastEpisode &&
+      other.minAge == minAge &&
+      other.releaseDate == releaseDate &&
+      other.source == source &&
+      other.studio == studio;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        title.hashCode ^
-        description.hashCode ^
-        imageUrl.hashCode ^
-        rating.hashCode ^
-        isEnded.hashCode ^
-        lastEpisode.hashCode ^
-        minAge.hashCode ^
-        source.hashCode ^
-        releaseDate.hashCode;
+      title.hashCode ^
+      description.hashCode ^
+      imageUrl.hashCode ^
+      rating.hashCode ^
+      isEnded.hashCode ^
+      lastEpisode.hashCode ^
+      minAge.hashCode ^
+      releaseDate.hashCode ^
+      source.hashCode ^
+      studio.hashCode;
   }
+}
+
+class StudioModel {
+  final int id;
+  final String name;
+
+  StudioModel({
+    required this.id,
+    required this.name,
+  });
+
+  StudioModel copyWith({
+    int? id,
+    String? name,
+  }) {
+    return StudioModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+    };
+  }
+
+  factory StudioModel.fromMap(Map<String, dynamic> map) {
+    return StudioModel(
+      id: map['id'] as int,
+      name: map['name'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory StudioModel.fromJson(String source) => StudioModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'StudioModel(id: $id, name: $name)';
+
+  @override
+  bool operator ==(covariant StudioModel other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.name == name;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }
