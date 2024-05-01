@@ -18,6 +18,7 @@ class AnimeModel {
   final StudioModel studio;
   final List<CharacterModel> characters;
   final int reviewsCount;
+  final List<TagModel> tags;
   // final List<AnimeModel> relatedAnimes;
 
   AnimeModel({
@@ -34,6 +35,7 @@ class AnimeModel {
     required this.studio,
     required this.characters,
     required this.reviewsCount,
+    required this.tags,
   });
 
   AnimeModel copyWith({
@@ -50,6 +52,7 @@ class AnimeModel {
     StudioModel? studio,
     List<CharacterModel>? characters,
     int? reviewsCount,
+    List<TagModel>? tags,
   }) {
     return AnimeModel(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class AnimeModel {
       studio: studio ?? this.studio,
       characters: characters ?? this.characters,
       reviewsCount: reviewsCount ?? this.reviewsCount,
+      tags: tags ?? this.tags,
     );
   }
 
@@ -85,6 +89,8 @@ class AnimeModel {
               ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
           .toList(),
       reviewsCount: map['numberOfReviews'] as int,
+      tags: List<TagModel>.from(
+          map['tags']?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
     );
   }
 
@@ -211,6 +217,40 @@ class CharacterModel {
       name: map['name'] as String,
       role: map['role'] == 'main' ? CharacterType.main : CharacterType.support,
       imageUrl: map['image'] as String,
+    );
+  }
+}
+
+class TagModel {
+  final int id;
+  final String name;
+
+  TagModel({
+    required this.id,
+    required this.name,
+  });
+
+  TagModel copyWith({
+    int? id,
+    String? name,
+  }) {
+    return TagModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+    };
+  }
+
+  factory TagModel.fromMap(Map<String, dynamic> map) {
+    return TagModel(
+      id: map['id'] as int,
+      name: map['name'] as String,
     );
   }
 }

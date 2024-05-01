@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +8,7 @@ class TagsView extends StatelessWidget {
     required this.tags,
   });
 
-  final List<String> tags;
+  final List<TagModel> tags;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class TagsView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(
-                  e,
+                  e.name,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
