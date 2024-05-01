@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
+import 'package:anime_slayer/features/splash_screen.dart';
 
 import 'app.dart';
 import 'package:flutter/material.dart';
@@ -43,17 +44,7 @@ class AppStartupLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 12),
-          Text('Loading...'),
-        ],
-      )),
-    );
+        debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }
 

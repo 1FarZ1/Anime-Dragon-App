@@ -1,15 +1,12 @@
 import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.dart';
 import 'package:anime_slayer/features/animes/presentation/search_view.dart';
 import 'package:anime_slayer/features/auth/presentation/auth_screen.dart';
-import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:anime_slayer/features/favorites/favorite_screen.dart';
 import 'package:anime_slayer/features/main_view.dart';
-import 'package:anime_slayer/splash_screen.dart';
+import 'package:anime_slayer/features/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'interfaces.dart';
 
 enum AppRoutes {
   home,
@@ -24,11 +21,9 @@ enum AppRoutes {
   auth
 }
 
-final isDarkProvider = StateProvider<bool>((ref) => false);
-
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/home',
     errorBuilder: (context, state) {
       return const Scaffold(
         body: Center(
@@ -39,18 +34,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
     // refreshListenable: ref.watch(userProvider) ,
     routes: [
-      GoRoute(
-        path: '/',
-        name: AppRoutes.splash.name,
-        pageBuilder: (context, state) {
-          return const MaterialPage(child: SplashScreen());
-        },
-      ),
+      // GoRoute(
+      //   path: '/',
+      //   name: AppRoutes.splash.name,
+      //   pageBuilder: (context, state) {
+      //     return const MaterialPage(child: SplashScreen());
+      //   },
+      // ),
       GoRoute(
         path: '/home',
         name: AppRoutes.home.name,
         pageBuilder: (context, state) {
-          return MaterialPage(child: MainView());
+          return const MaterialPage(child: MainView());
         },
       ),
       GoRoute(

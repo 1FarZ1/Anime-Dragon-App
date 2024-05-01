@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'characters_view.dart';
+import 'custom_back_button.dart';
 import 'episodes_view.dart';
 import 'main_detaill_view.dart';
 import 'widgets/favorite_button.dart';
@@ -52,7 +55,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
                     numberOfEpisodes: anime.lastEpisode,
                   ),
                   const Center(child: Text('Released Soon ')),
-                  const Center(child: Text('الشخصيات')),
+                  CharactersView(anime.characters),
                 ],
               ),
             )
@@ -61,18 +64,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
   }
 }
 
-class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        context.pop();
-      },
-    );
-  }
+enum CharacterType {
+  main,
+  support,
 }
