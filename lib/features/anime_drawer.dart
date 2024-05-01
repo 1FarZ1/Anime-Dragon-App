@@ -99,7 +99,10 @@ class AnimeDrawer extends HookConsumerWidget {
             title: const Text('قائمتي'),
             onTap: () {
               changeSelectedItem(DrawerOption.myList);
-              // Navigator.of(context).pushNamedAndRemoveUntil('/updates', (route) => false);
+
+ context.goNamed(
+                AppRoutes.myList.name,
+              );
             },
             leading: const Icon(Icons.list),
           ),

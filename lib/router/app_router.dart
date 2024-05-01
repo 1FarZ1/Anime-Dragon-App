@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/animeList/anime_list_screen.dart';
 import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.dart';
 import 'package:anime_slayer/features/animes/presentation/search_view.dart';
 import 'package:anime_slayer/features/auth/presentation/auth_screen.dart';
@@ -85,6 +86,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoutes.favorite.name,
         pageBuilder: (context, state) {
           return const MaterialPage(child: FavoriteScreen());
+        },
+      ),
+      GoRoute(
+        path: '/myList',
+        name: AppRoutes.myList.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: AnimeListScreen());
         },
       ),
     ],

@@ -16,7 +16,7 @@ class ReviewersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rating = isGlobal ? 6.89 : anime.rating;
-    final reviewers = isGlobal ? 3682 : 1096;
+    final reviewers = isGlobal ? 3682 : anime.reviewsCount;
 
     return Column(
       children: [

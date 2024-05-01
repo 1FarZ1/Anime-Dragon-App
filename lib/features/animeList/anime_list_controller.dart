@@ -3,21 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../animes/domaine/anime_model.dart';
 
-final favoriteAnimesController = StateNotifierProvider<FavoriteAnimesController,
+final listAnimesController = StateNotifierProvider<ListAnimesController,
     AsyncValue<List<AnimeModel>>>((ref) {
-  return FavoriteAnimesController(ref.watch(animesRepositoryProvider));
+  return ListAnimesController(ref.watch(animesRepositoryProvider));
 });
 
-class FavoriteAnimesController
+class ListAnimesController
     extends StateNotifier<AsyncValue<List<AnimeModel>>> {
-  FavoriteAnimesController(this.animesRepository)
-      : super(const AsyncValue.loading()) {
-    fetchFavoriteAnimes();
+  ListAnimesController(this.animesRepository) : super(const AsyncValue.loading()) {
+    fetchMyCollection();
   }
 
   final AnimesRepository animesRepository;
 
-  void fetchFavoriteAnimes() async {
+  void fetchMyCollection() async {
     state = const AsyncValue.loading();
     try {
       final animes = await animesRepository.getFavoriteAnime();
@@ -27,22 +26,21 @@ class FavoriteAnimesController
     }
   }
 
-  void addFavoriteAnime(int animeId) async {
+  void addListAnime(int animeId) async {
     try {
       state = const AsyncValue.loading();
-      final anime = await animesRepository.addFavoriteAnime(animeId);
-      state = AsyncValue.data([...state.asData!.value, anime]);
-
-      // fetchFavoriteAnimes();
+      await animesRepository.addToCollection(animeId);
+      // TODO: maybe change this later on
+      fetchMyCollection();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
   }
 
-  void removeFavoriteAnime(int animeId) async {
+  void removeListAnime(int animeId) async {
     try {
       state = const AsyncValue.loading();
-      await animesRepository.removeFavoriteAnime(animeId);
+      await animesRepository.removeFromCollection(animeId);
 
       state = AsyncValue.data(state.asData!.value
           .where((element) => element.id != animeId)
@@ -51,4 +49,6 @@ class FavoriteAnimesController
       state = AsyncValue.error(e, st);
     }
   }
+
+  
 }

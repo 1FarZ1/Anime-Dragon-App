@@ -16,6 +16,10 @@ class EndPoints {
 
   static const String addReview = "/reviews/add";
   
+
+  static const String collection = "/collection";
+  static const String myCollection = "/collection/me";
+
   static const String episodes = "/episodes/";
   static const String singleEpisode = "/episodes/episode/";
   static const String streamEpisode = "/episodes/spisode/stream/";

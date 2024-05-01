@@ -30,11 +30,13 @@ final animeSearchProvider = FutureProvider.family
 
 final isFavoriteAnimeProvider = Provider.family<bool, int>((ref, id) {
   // get the favorite anime
-  final favoriteAnimes = ref.watch(favoriteAnimesController).asData?.value;
-  final isFavorite = favoriteAnimes?.any((element) => element.id == id) ?? false;
+  if (ref.watch(favoriteAnimesController).asData == null) {
+    return false;
+  }
+  final favoriteAnimes = ref.watch(favoriteAnimesController).asData!.value;
+  final isFavorite = favoriteAnimes.any((element) => element.id == id);
 
   return isFavorite;
-  
 });
 
 final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
@@ -42,7 +44,6 @@ final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
   final anime = animes?.firstWhere((element) => element.id == id);
 
   return anime;
-
 });
 
 class AnimeController extends StateNotifier<AnimeState> {

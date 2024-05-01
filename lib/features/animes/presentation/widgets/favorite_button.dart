@@ -8,6 +8,7 @@ class FavoriteButton extends HookConsumerWidget {
     super.key,
     required this.isPressedInitial,
     required this.animeId,
+
   });
 
   final bool isPressedInitial;
@@ -27,9 +28,7 @@ class FavoriteButton extends HookConsumerWidget {
         if (isPressed.value) {
           ref.read(favoriteAnimesController.notifier).addFavoriteAnime(animeId);
         } else {
-          ref
-              .read(favoriteAnimesController.notifier)
-              .removeFavoriteAnime(animeId);
+          ref.read(favoriteAnimesController.notifier).removeFavoriteAnime(animeId);
         }
       },
     );

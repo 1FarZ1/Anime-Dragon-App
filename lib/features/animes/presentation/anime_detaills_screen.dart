@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'characters_view.dart';
-import 'custom_back_button.dart';
 import 'episodes_view.dart';
 import 'main_detaill_view.dart';
 import 'widgets/favorite_button.dart';
@@ -67,4 +66,20 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
 enum CharacterType {
   main,
   support,
+}
+
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        context.pop();
+      },
+    );
+  }
 }

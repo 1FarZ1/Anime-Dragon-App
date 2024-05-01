@@ -24,13 +24,13 @@ class StatsSection extends StatelessWidget {
           Expanded(child: ReviewersWidget(anime: anime)),
           Expanded(child: ReviewersWidget(anime: anime, isGlobal: true)),
           Expanded(
-              child: AddButton(
+              child: AddReviewButton(
             text: 'اضافة تقييم',
             icon: Icons.star_border_outlined,
             animeId: anime.id,
           )),
           Expanded(
-              child: AddButton(
+              child: AddToMyListButton(
             text: 'قائمتي',
             icon: Icons.playlist_add,
             animeId: anime.id,
@@ -40,3 +40,6 @@ class StatsSection extends StatelessWidget {
     );
   }
 }
+
+
+// add fav - >  change local state   

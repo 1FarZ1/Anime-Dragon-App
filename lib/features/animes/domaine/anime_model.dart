@@ -45,7 +45,6 @@ class AnimeModel {
     bool? isEnded,
     int? lastEpisode,
     int? minAge,
-
     DateTime? releaseDate,
     String? source,
     StudioModel? studio,
@@ -69,15 +68,13 @@ class AnimeModel {
     );
   }
 
-  
-
   factory AnimeModel.fromMap(Map<String, dynamic> map) {
     return AnimeModel(
       id: map['id'] as int,
       title: map['title'] as String,
       description: map['description'] as String,
       imageUrl: map['image'] as String,
-      rating: map['rating'] as double,
+      rating: double.parse(map['rating'].toString()),
       isEnded: map['Ended'] as bool,
       lastEpisode: map['lastEpisode'] as int,
       minAge: map['minAge'] as int,
@@ -87,7 +84,7 @@ class AnimeModel {
       characters: List<CharacterModel>.from(map['characters']
               ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
           .toList(),
-      reviewsCount: map['reviewsCount'] as int,
+      reviewsCount: map['numberOfReviews'] as int,
     );
   }
 
@@ -100,17 +97,7 @@ class AnimeModel {
   bool operator ==(covariant AnimeModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.title == title &&
-        other.description == description &&
-        other.imageUrl == imageUrl &&
-        other.rating == rating &&
-        other.isEnded == isEnded &&
-        other.lastEpisode == lastEpisode &&
-        other.minAge == minAge &&
-        other.releaseDate == releaseDate &&
-        other.source == source &&
-        other.studio == studio;
+    return other.id == id;
   }
 
   @override

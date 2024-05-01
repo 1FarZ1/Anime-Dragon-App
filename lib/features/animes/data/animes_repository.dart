@@ -43,10 +43,16 @@ abstract class AnimesRepository {
 
   Future<List<AnimeModel>> getFavoriteAnime();
   // add favorite
-  Future<void> addFavoriteAnime(int animeId);
+  Future<AnimeModel> addFavoriteAnime(int animeId);
   Future<void> removeFavoriteAnime(int animeId);
 
   Future<void> addReviewToAnime(AddReviewRequest addReviewRequest);
+
+  //collections
+  Future<List<AnimeModel>> getMyCollection();
+  // add to collection
+  Future<void> addToCollection(int animeId);
+  Future<void> removeFromCollection(int animeId);
 }
 
 class AnimesRepositoryImpl implements AnimesRepository {
@@ -76,8 +82,10 @@ class AnimesRepositoryImpl implements AnimesRepository {
   }
 
   @override
-  Future<void> addFavoriteAnime(int animeId) async {
-    await dioClient.post("${EndPoints.favoriteOperation}/$animeId", data: {});
+  Future<AnimeModel> addFavoriteAnime(int animeId) async {
+    final response = await dioClient
+        .post("${EndPoints.favoriteOperation}/$animeId", data: {});
+    return AnimeModel.fromMap(response.data['anime']);
   }
 
   @override
@@ -88,5 +96,21 @@ class AnimesRepositoryImpl implements AnimesRepository {
   @override
   Future<void> addReviewToAnime(AddReviewRequest addReviewRequest) async {
     await dioClient.post(EndPoints.addReview, data: addReviewRequest.toMap());
+  }
+
+  @override
+  Future<List<AnimeModel>> getMyCollection() async {
+    final response = await dioClient.get(EndPoints.myCollection);
+    return (response.data as List).map((e) => AnimeModel.fromMap(e)).toList();
+  }
+
+  @override
+  Future<void> addToCollection(int animeId) async {
+    await dioClient.post("${EndPoints.collection}/$animeId", data: {});
+  }
+
+  @override
+  Future<void> removeFromCollection(int animeId) async {
+    await dioClient.delete("${EndPoints.collection}/$animeId");
   }
 }
