@@ -19,7 +19,7 @@ class ListAnimesController
   void fetchMyCollection() async {
     state = const AsyncValue.loading();
     try {
-      final animes = await animesRepository.getFavoriteAnime();
+      final animes = await animesRepository.getMyCollection();
       state = AsyncValue.data(animes);
     } catch (e, st) {
       state = AsyncValue.error(e, st);

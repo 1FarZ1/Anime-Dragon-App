@@ -32,8 +32,6 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
           ),
           actions: [
             FavoriteButton(
-              //TODO: change this to more optimal way
-              isPressedInitial: ref.watch(isFavoriteAnimeProvider(animeId)),
               animeId: animeId,
             ),
             const OptionsAction(),

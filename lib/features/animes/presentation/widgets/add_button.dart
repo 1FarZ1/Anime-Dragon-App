@@ -78,6 +78,10 @@ class AddToMyListButton extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
+        if (checkIfIsInList()) {
+          ref.read(listAnimesController.notifier).removeListAnime(animeId);
+          return;
+        }
         ref.read(listAnimesController.notifier).addListAnime(animeId);
       },
       child: Column(

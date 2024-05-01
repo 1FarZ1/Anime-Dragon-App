@@ -1,4 +1,5 @@
 import 'package:anime_slayer/features/animes/data/animes_repository.dart';
+import 'package:anime_slayer/utils/custom_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../animes/domaine/anime_model.dart';
@@ -43,7 +44,7 @@ class FavoriteAnimesController
     try {
       state = const AsyncValue.loading();
       await animesRepository.removeFavoriteAnime(animeId);
-
+      logger.i(state.value);
       state = AsyncValue.data(state.asData!.value
           .where((element) => element.id != animeId)
           .toList());
