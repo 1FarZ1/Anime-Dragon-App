@@ -18,6 +18,7 @@ abstract class AnimesRepository {
   // add favorite
   Future<void> addFavoriteAnime(int animeId);
   Future<void> removeFavoriteAnime(int animeId);
+  
 }
 
 class AnimesRepositoryImpl implements AnimesRepository {

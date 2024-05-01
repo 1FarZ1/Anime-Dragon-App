@@ -72,12 +72,12 @@ class AuthRepository {
   Future fetchUserInfo() async {
     try {
       final response = await remoteDataSource.fetchUserInfo();
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         return UserModel.fromMap(response.data);
       }
-      throw Exception('Failed to fetch user info');
     } catch (e) {
-      rethrow;
+      //TODO
+      print('no data then');
     }
   }
 
