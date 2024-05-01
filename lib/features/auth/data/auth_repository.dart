@@ -79,6 +79,16 @@ class AuthRepository {
       //TODO
       print('no data then');
     }
+
+  }
+
+  // remove token
+  Future<void> removeToken() async {
+    try {
+      await localDataSource.deleteToken();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   // Future<User> updateProfile({required UpdateProfileRequestModel data}) async {

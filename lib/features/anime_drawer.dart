@@ -43,6 +43,7 @@ class AnimeDrawer extends HookConsumerWidget {
           GestureDetector(
             onTap: () {
               if (user.isLoggedIn) {
+                context.pushNamed(AppRoutes.profile.name);
                 return;
               }
               context.pushNamed(AppRoutes.auth.name);
