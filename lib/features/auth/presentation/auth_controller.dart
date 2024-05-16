@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/dio.dart';
 import '../data/auth_repository.dart';
-import '../data/login_request_model.dart';
+import '../data/requests/login_request_model.dart';
 import '../data/remote_auth_data_source.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, AuthState>(

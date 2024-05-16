@@ -1,7 +1,10 @@
 import 'package:anime_slayer/consts/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
+
+import 'play_back_controls.dart';
 
 class WatchEpisodeScreen extends StatefulWidget {
   const WatchEpisodeScreen({super.key, required this.episodeNumber});
@@ -181,52 +184,6 @@ class _PlayButtonState extends State<PlayButton> {
   }
 }
 
-class PlayBackControls extends StatelessWidget {
-  const PlayBackControls({
-    super.key,
-    required VideoPlayerController controller,
-  }) : _controller = controller;
-
-  final VideoPlayerController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          iconSize: 16.0,
-          color: Colors.white,
-          icon: const Icon(Icons.replay_10),
-          onPressed: () {
-            _controller.seekTo(
-                _controller.value.position - const Duration(seconds: 10));
-          },
-        ),
-        Expanded(
-          child: VideoProgressIndicator(
-            _controller,
-            allowScrubbing: true,
-            colors: const VideoProgressColors(
-              playedColor: AppColors.primaryColor,
-              bufferedColor: Colors.grey,
-              backgroundColor: Colors.white,
-            ),
-          ),
-        ),
-        IconButton(
-          iconSize: 16.0,
-          color: Colors.white,
-          icon: const Icon(Icons.forward),
-          onPressed: () {
-            _controller.seekTo(
-                _controller.value.position + const Duration(seconds: 10));
-          },
-        ),
-      ],
-    );
-  }
-}
-
 //TODO`
 class LoopWidget extends StatefulWidget {
   const LoopWidget({super.key, required this.controller});
@@ -279,7 +236,6 @@ class _ChangeSpeedWidgetState extends State<ChangeSpeedWidget> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      //  without any padding
       onPressed: () {
         setState(() {
           widget.controller.setPlaybackSpeed(getNextSpeed());
@@ -294,23 +250,16 @@ class _ChangeSpeedWidgetState extends State<ChangeSpeedWidget> {
   }
 }
 
-class SoundWidget extends StatefulWidget {
+class SoundWidget extends HookWidget {
   const SoundWidget({super.key, required this.controller});
   final VideoPlayerController controller;
 
   @override
-  State<SoundWidget> createState() => _SoundWidgetState();
-}
-
-class _SoundWidgetState extends State<SoundWidget> {
-  @override
   Widget build(BuildContext context) {
     return Slider(
-      value: widget.controller.value.volume,
+      value: controller.value.volume,
       onChanged: (value) {
-        setState(() {
-          widget.controller.setVolume(value);
-        });
+        controller.setVolume(value);
       },
       min: 0,
       max: 1,

@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../providers/dio.dart';
 import '../../../consts/endpoints.dart';
-import 'login_request_model.dart';
+import 'requests/login_request_model.dart';
 
 final remoteAuthDataSourceProvider = Provider<RemoteAuthDataSource>((ref) {
   return RemoteAuthDataSource(dioClient: ref.watch(dioClientProvider));

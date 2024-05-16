@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'local_auth_data_source.dart';
-import 'login_request_model.dart';
+import 'requests/login_request_model.dart';
 import 'remote_auth_data_source.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
