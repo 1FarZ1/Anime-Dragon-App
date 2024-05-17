@@ -27,6 +27,9 @@
 
 ## Screenshots
 
+  <img src="assets/screenshots/show.png" width="1000" height="400" />
+  <img src="assets/screenshots/show1.png" width="1000" height="400" />
+
 ## Dependencies
 
 ```yaml
