@@ -7,6 +7,13 @@
 - Under Development
 - need to refector the Folder Structure and decouple the Widgets
 
+## Must Do in Code
+
+- More Error Handling in the Code
+- Refector the Code and decouple it
+- Fix Bugs that effect the User Experience
+- Fix Any issue with the folder structure
+
 ## Features
 
 - Get Animes
