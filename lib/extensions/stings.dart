@@ -7,6 +7,8 @@ extension X on String {
 extension Y on DateTime {
   String get toSimpleDate => toIso8601String().split('T').first;
 
+  String get toSimpleYear => toSimpleDate.split('-').first;
+
   String get timeSaiontime {
     final month = this.month;
     final year = this.year;

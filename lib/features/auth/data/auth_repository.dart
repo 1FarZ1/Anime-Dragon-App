@@ -30,7 +30,7 @@ class AuthRepository {
       localDataSource.saveToken(token);
       return response;
     } on DioException catch (e) {
-      throw Exception('Failed to login');
+      throw Exception(e.message);
     } catch (e) {
       throw Exception('Failed to login');
     }
@@ -77,7 +77,6 @@ class AuthRepository {
       print('no data then');
     }
   }
-
 
   // Future<User> updateProfile({required UpdateProfileRequestModel data}) async {
   //   try {

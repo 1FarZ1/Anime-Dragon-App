@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:anime_slayer/features/splash_screen.dart';
+import 'package:anime_slayer/providers/token_controller.dart';
 
 import 'app.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,11 @@ import 'providers/shared_pref.dart';
 
 final appStartupProvider = FutureProvider<void>((ref) async {
   ref.onDispose(() {
-    ref.invalidate(sharedPrefProvider);
+    // ref.invalidate(sharedPrefProvider);
   });
-  await ref.watch(sharedPrefProvider.future);
-  await ref.watch(userProvider.notifier).getUser();
+  // await ref.watch(sharedPrefProvider.future);
+  // ref.watch(tokenProvider);
+  // ref.watch(userProvider);
 });
 
 class AppStartupWidget extends ConsumerWidget {

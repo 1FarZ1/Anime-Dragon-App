@@ -1,3 +1,4 @@
+import 'package:anime_slayer/extensions/stings.dart';
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/router/app_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -48,7 +49,9 @@ class AnimeGridCard extends StatelessWidget {
                   bottom: 5,
                   right: 5,
                   child: Text(
-                    '${anime.lastEpisode} : حلقة',
+                    anime.isEnded
+                        ? anime.releaseDate.toSimpleYear
+                        : '${anime.lastEpisode} : حلقة',
                     style: const TextStyle(
                       color: Colors.white,
                       shadows: [

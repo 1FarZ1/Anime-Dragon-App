@@ -1,24 +1,41 @@
 import 'dart:convert';
 import 'package:anime_slayer/features/auth/data/auth_repository.dart';
+import 'package:anime_slayer/utils/custom_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../providers/token_controller.dart';
+
 final userProvider = StateNotifierProvider<UserNotifier, UserState>(
-  (ref) => UserNotifier(ref.watch(authRepositoryProvider)),
+  (ref) {
+    final token = ref.watch(tokenProvider);
+
+    return UserNotifier(ref.watch(authRepositoryProvider), token);
+  },
 );
 
 class UserNotifier extends StateNotifier<UserState> {
-  UserNotifier(this.authRepository) : super(const UserState.initial());
+  UserNotifier(this.authRepository, this.token)
+      : super(const UserState.initial()) {
+    if (token == null) {
+      clearUser();
+    } else {
+      _getUser();
+    }
+  }
 
+  final String? token;
   final AuthRepository authRepository;
-  getUser() async {
+
+  _getUser() async {
     final user = await authRepository.fetchUserInfo();
+    AppLogger.logInfo('UserNotifier user: $user');
     state = state.copyWith(user: user);
   }
 
-  // set User
-  void setUser(UserModel user) {
-    state = state.copyWith(user: user);
-  }
+  // // set User
+  // void setUser(UserModel user) {
+  //   state = state.copyWith(user: user);
+  // }
 
   // clear User
   void clearUser() async {
@@ -40,7 +57,7 @@ class UserState {
     UserModel? user,
   }) {
     return UserState(
-      userData: user ?? this.userData,
+      userData: user ?? userData,
     );
   }
 
@@ -76,34 +93,33 @@ class UserState {
 }
 
 class UserModel {
-  final int id;
   final String email;
   final String avatar;
   final String name;
   UserModel({
-    required this.id,
     required this.email,
     required this.avatar,
     required this.name,
   });
 
   UserModel copyWith({
-    int? id,
     String? email,
     String? avatar,
     String? name,
   }) {
     return UserModel(
-      id: id ?? this.id,
       email: email ?? this.email,
       avatar: avatar ?? this.avatar,
       name: name ?? this.name,
     );
   }
 
+  factory UserModel.empty() {
+    return UserModel(email: '', avatar: '', name: '');
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'email': email,
       'avatar': avatar,
       'name': name,
@@ -112,7 +128,6 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] as int,
       email: map['email'] as String,
       avatar: map['avatar'] as String,
       name: map['name'] as String,
@@ -126,21 +141,18 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, avatar: $avatar, name: $name)';
+    return 'UserModel( email: $email, avatar: $avatar, name: $name)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.email == email &&
-        other.avatar == avatar &&
-        other.name == name;
+    return other.email == email && other.avatar == avatar && other.name == name;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ email.hashCode ^ avatar.hashCode ^ name.hashCode;
+    return email.hashCode ^ avatar.hashCode ^ name.hashCode;
   }
 }

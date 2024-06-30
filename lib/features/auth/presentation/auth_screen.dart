@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:anime_slayer/consts/colors.dart';
+import 'package:anime_slayer/extensions/asyncValue.dart';
 import 'package:anime_slayer/features/auth/data/auth_repository.dart';
 import 'package:anime_slayer/features/auth/data/requests/login_request_model.dart';
 import 'package:anime_slayer/features/auth/presentation/auth_controller.dart';
@@ -71,23 +72,9 @@ class AuthScreen extends HookConsumerWidget {
     }
 
     ref.listen(authControllerProvider, ((previous, next) {
-      if (next.error == null) {
-        // show snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('تم تسجيل الدخول بنجاح'),
-          ),
-        );
+      next.handleSideThings(context, () {
         context.pop();
-      }
-
-      if (next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('حدث خطأ ما'),
-          ),
-        );
-      }
+      });
     }));
 
     return Scaffold(
@@ -159,13 +146,17 @@ class AuthScreen extends HookConsumerWidget {
                   minimumSize: Size(double.infinity, 50.h),
                   backgroundColor: AppColors.primaryColor,
                 ),
-                child: Text(
-                  isLogin.value ? 'تسجيل الدخول' : 'انشاء حساب جديد',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.sp,
-                  ),
-                ),
+                child: ref.watch(authControllerProvider).isLoading
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                    : Text(
+                        isLogin.value ? 'تسجيل الدخول' : 'انشاء حساب جديد',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                        ),
+                      ),
               ),
               TextButton(
                 onPressed: () {

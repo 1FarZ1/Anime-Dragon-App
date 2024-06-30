@@ -1,4 +1,5 @@
 import 'package:anime_slayer/extensions/stings.dart';
+import 'package:anime_slayer/features/auth/data/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider).userData!;
+    final user = ref.watch(userProvider).userData ?? UserModel.empty();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -21,7 +22,9 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 20, width: double.infinity),
           CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(user.avatar.toImageUrl),
+            backgroundImage: user.avatar.isEmpty
+                ? const AssetImage('assets/default.png') as ImageProvider
+                : NetworkImage(user.avatar.toImageUrl),
           ),
           20.verticalSpace,
           Text(
@@ -38,8 +41,8 @@ class ProfileScreen extends ConsumerWidget {
           20.verticalSpace,
           ElevatedButton(
             onPressed: () {
-              ref.read(userProvider.notifier).clearUser();
               context.pop();
+              ref.read(authRepositoryProvider).logout();
             },
             child: const Text('Sign Out'),
           )

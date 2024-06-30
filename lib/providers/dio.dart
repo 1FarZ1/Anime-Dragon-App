@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../utils/custom_logger.dart';
 import 'shared_pref.dart';
 import 'token_controller.dart';
 
@@ -122,7 +123,7 @@ class AuthInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (token != null) {
-      // AppLogger.logDebug('Token: $token');
+      AppLogger.logDebug('Token: $token');
       options.headers.addAll({'Authorization': 'Bearer $token'});
     }
     super.onRequest(options, handler);
