@@ -52,6 +52,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
                   MainDetaillView(anime: anime),
                   EpisodesView(
                     numberOfEpisodes: anime.lastEpisode,
+                    animeId: anime.id,
                   ),
                   const Center(child: Text('Not Implemented Yet ')),
                   CharactersView(anime.characters),

@@ -14,7 +14,7 @@ import 'token_controller.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio();
-  dio.options.baseUrl = EndPoints.baseUrl;
+  dio.options.baseUrl = EndPoints.prodBaseUrl;
   dio.options.connectTimeout = const Duration(seconds: 5000);
   dio.options.receiveTimeout = const Duration(seconds: 3000);
   dio.options.headers = {

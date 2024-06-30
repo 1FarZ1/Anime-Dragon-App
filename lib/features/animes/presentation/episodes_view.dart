@@ -5,9 +5,11 @@ class EpisodesView extends StatelessWidget {
   const EpisodesView({
     super.key,
     required this.numberOfEpisodes,
+    required this.animeId,
   });
 
   final int numberOfEpisodes;
+  final int animeId;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -19,6 +21,7 @@ class EpisodesView extends StatelessWidget {
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => WatchEpisodeScreen(
                       episodeNumber: index + 1,
+                      animeId: animeId ,
                     ))));
       },
     );

@@ -8,8 +8,9 @@ import 'package:video_player/video_player.dart';
 import 'play_back_controls.dart';
 
 class WatchEpisodeScreen extends StatefulWidget {
-  const WatchEpisodeScreen({super.key, required this.episodeNumber});
+  const WatchEpisodeScreen({super.key, required this.episodeNumber, required this.animeId});
   final int episodeNumber;
+  final int animeId ;
 
   @override
   State<WatchEpisodeScreen> createState() => _WatchEpisodeScreenState();
@@ -23,7 +24,7 @@ class _WatchEpisodeScreenState extends State<WatchEpisodeScreen> {
     super.initState();
 
     final uri = Uri.parse(
-        '${EndPoints.prodBaseUrl}/episodes/episode/stream/${widget.episodeNumber}');
+        '${EndPoints.prodBaseUrl}/episodes/episode/stream/${widget.animeId}/${widget.episodeNumber}');
 
     print(uri.path);
     _controller = VideoPlayerController.networkUrl(

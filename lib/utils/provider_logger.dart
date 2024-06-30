@@ -9,6 +9,6 @@ class ProviderLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    AppLogger.logDebug('Provider Updated: ${provider.name}');
+    // AppLogger.logDebug('Provider Updated: ${provider.name}');
   }
 }
