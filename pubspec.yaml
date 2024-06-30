@@ -26,6 +26,7 @@ dependencies:
   video_player: ^2.8.6
   responsive_grid_list: ^1.4.0
   image_picker: ^1.1.0
+  get_secure_storage: ^1.0.4
 
 dev_dependencies:
   flutter_test:

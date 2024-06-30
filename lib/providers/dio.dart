@@ -3,49 +3,51 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import '../features/auth/data/local_auth_data_source.dart';
 import 'shared_pref.dart';
-
-final dioProvider = Provider<Dio>((ref) => Dio());
-
-
-final tokenProvider = StateProvider<String?>((ref) =>
-    ref.watch(sharedPrefProvider).requireValue.getString(Pref.token.name));
+import 'token_controller.dart';
 
 
-final dioClientProvider = Provider<DioClient>((ref) => DioClient(
-    ref.watch(dioProvider),
-    // ref.watch(sharedPrefProvider).requireValue,
-    ref.watch(tokenProvider)));
+
+
+
+
+
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio();
+  dio.options.baseUrl = EndPoints.baseUrl;
+  dio.options.connectTimeout = const Duration(seconds: 5000);
+  dio.options.receiveTimeout = const Duration(seconds: 3000);
+  dio.options.headers = {
+    'contentType': 'application/json; charset=UTF-8',
+  };
+  dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      responseHeader: false,
+      error: true,
+      compact: true));
+  return dio;
+});
+
+final dioClientProvider = Provider<DioClient>((ref) {
+  ref.onDispose(() {
+    // ref.read(dioProvider).close(force: true);
+  });
+  final dio = ref.watch(dioProvider);
+  dio.interceptors.add(AuthInterceptor(ref));
+
+  return DioClient(dio);
+});
 
 class DioClient {
-  final Dio _dio;
-  // final SharedPreferences pref;
-  final String? token;
-
-  DioClient(this._dio, this.token) {
-    // AppLogger.logInfo('Got token: $token');
-
-    _dio.options.baseUrl = EndPoints.prodBaseUrl;
-    _dio.options.connectTimeout = const Duration(seconds: 5000);
-    _dio.options.receiveTimeout = const Duration(seconds: 3000);
-    _dio.options.headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token'
-    };
-    _dio.interceptors.add(PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        responseHeader: false,
-        error: true,
-        compact: true));
-  }
+  final Dio dio;
+  DioClient(this.dio);
 
   Future<Response> get(String path,
       {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response = await _dio.get(path, queryParameters: queryParameters);
+      final response = await dio.get(path, queryParameters: queryParameters);
       return response;
     } on DioException {
       rethrow;
@@ -57,7 +59,7 @@ class DioClient {
       required data,
       contentType = Headers.jsonContentType}) async {
     try {
-      final response = await _dio.post(path,
+      final response = await dio.post(path,
           queryParameters: queryParameters,
           data: data,
           options: Options(contentType: contentType));
@@ -72,7 +74,7 @@ class DioClient {
       Map<String, dynamic>? data}) async {
     try {
       final response =
-          await _dio.put(path, queryParameters: queryParameters, data: data);
+          await dio.put(path, queryParameters: queryParameters, data: data);
       return response;
     } on DioException {
       rethrow;
@@ -82,8 +84,7 @@ class DioClient {
   Future<Response> delete(String path,
       {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
-          await _dio.delete(path, queryParameters: queryParameters);
+      final response = await dio.delete(path, queryParameters: queryParameters);
       return response;
     } on DioException {
       rethrow;
@@ -95,10 +96,84 @@ class DioClient {
       required Map<String, dynamic> data}) async {
     try {
       final response =
-          await _dio.patch(path, queryParameters: queryParameters, data: data);
+          await dio.patch(path, queryParameters: queryParameters, data: data);
       return response;
     } on DioException {
       rethrow;
     }
   }
 }
+
+class AuthInterceptor extends Interceptor {
+  final Ref ref;
+  AuthInterceptor(this.ref) {
+    init();
+  }
+
+  void init() {
+    token = ref.read(tokenProvider);
+    ref.listen(tokenProvider, (previous, next) {
+      token = next;
+    });
+  }
+
+  String? token;
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (token != null) {
+      // AppLogger.logDebug('Token: $token');
+      options.headers.addAll({'Authorization': 'Bearer $token'});
+    }
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response!.isUnauthorized) {
+    } else if (err.response!.isForbidden) {}
+    super.onError(err, handler);
+  }
+}
+
+
+extension ResponseX on Response {
+  mapTo<T>(T Function(Map<String, dynamic> json) fromJson) {
+    return fromJson(data);
+  }
+
+  T mapToList<T>(T Function(List<dynamic> json) fromJson) {
+    return fromJson(data);
+  }
+
+  bool get isSuccessful => statusCode! >= 200 && statusCode! < 300;
+
+  bool get isUnauthorized => statusCode == 401;
+
+  bool get isForbidden => statusCode == 403;
+
+  void throwIfNotSuccessful() {
+    if (!isSuccessful) {
+      throw DioException(
+        response: this,
+        error: 'Request failed with status code $statusCode',
+        requestOptions: requestOptions,
+      );
+    }
+  }
+
+  String? get errorMessage {
+    if (data is Map<String, dynamic>) {
+      return data['message'] as String?;
+    }
+    return null;
+  }
+
+  String get token {
+    if (data is Map<String, dynamic>) {
+      return data['token'] as String;
+    }
+    return '';
+  }
+}
+

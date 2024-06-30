@@ -44,7 +44,7 @@ class FavoriteAnimesController
     try {
       state = const AsyncValue.loading();
       await animesRepository.removeFavoriteAnime(animeId);
-      logger.i(state.value);
+      // logger.i(state.value);
       state = AsyncValue.data(state.asData!.value
           .where((element) => element.id != animeId)
           .toList());

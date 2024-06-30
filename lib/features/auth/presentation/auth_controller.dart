@@ -97,8 +97,8 @@ class AuthState {
   int get hashCode => isLoading.hashCode ^ error.hashCode;
 
   @override
-  String toString() => 'AuthState(isLoading: $isLoading, error: $error)';
-
+  String toString() => 'AuthS tate(isLoading: $isLoading, error: $error)';
+ 
   AuthState copyWith({
     bool? isLoading,
     String? error,

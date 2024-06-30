@@ -2,7 +2,7 @@ import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'local_auth_data_source.dart';
+import '../../../providers/local_auth_data_source.dart';
 import 'requests/login_request_model.dart';
 import 'remote_auth_data_source.dart';
 
@@ -26,9 +26,8 @@ class AuthRepository {
     try {
       final response = await remoteDataSource.login(data: data);
 
-      final token = response.data['access_token'] as String?;
-      await localDataSource.saveToken(token);
-
+      final token = response.data['access_token'] as String;
+      localDataSource.saveToken(token);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to login');
@@ -40,9 +39,8 @@ class AuthRepository {
   Future<Response> register({required RegisterRequestModel data}) async {
     try {
       final response = await remoteDataSource.register(data: data);
-      final token = response.data['access_token'] as String?;
-      await localDataSource.saveToken(token);
-
+      final token = response.data['access_token'] as String;
+      localDataSource.saveToken(token);
       return response;
     } on DioException catch (e) {
       throw Exception('Failed to register');
@@ -53,8 +51,7 @@ class AuthRepository {
 
   Future<void> logout() async {
     try {
-      // final response = await remoteDataSource.logout();
-      await localDataSource.deleteToken();
+      localDataSource.clearToken();
     } catch (e) {
       rethrow;
     }
@@ -79,17 +76,8 @@ class AuthRepository {
       //TODO
       print('no data then');
     }
-
   }
 
-  // remove token
-  Future<void> removeToken() async {
-    try {
-      await localDataSource.deleteToken();
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   // Future<User> updateProfile({required UpdateProfileRequestModel data}) async {
   //   try {

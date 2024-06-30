@@ -23,7 +23,7 @@ class UserNotifier extends StateNotifier<UserState> {
   // clear User
   void clearUser() async {
     state = const UserState.initial();
-    await authRepository.removeToken();
+    await authRepository.logout();
   }
 }
 
