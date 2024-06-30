@@ -8,22 +8,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+//TODO
+void authGuarder(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    content: Text('يجب تسجيل الدخول اولا'),
+  ));
+}
+
 class AddReviewButton extends ConsumerWidget {
   const AddReviewButton({
     super.key,
     required this.text,
     required this.icon,
     required this.animeId,
+    required this.canAdd,
   });
 
   final String text;
   final IconData icon;
   final int animeId;
+  final bool canAdd;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () async {
+        if (!canAdd) {
+         authGuarder(context);
+          return;
+        }
+
         final value = await showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -63,11 +77,13 @@ class AddToMyListButton extends ConsumerWidget {
     required this.text,
     required this.icon,
     required this.animeId,
+    required this.canAdd,
   });
 
   final String text;
   final IconData icon;
   final int animeId;
+  final bool canAdd;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,6 +94,11 @@ class AddToMyListButton extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
+        if (!canAdd) {
+          authGuarder(context);
+          return;
+        }
+
         if (checkIfIsInList()) {
           ref.read(listAnimesController.notifier).removeListAnime(animeId);
           return;

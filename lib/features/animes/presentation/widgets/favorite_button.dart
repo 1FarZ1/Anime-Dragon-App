@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/animes/presentation/widgets/add_button.dart';
 import 'package:anime_slayer/features/favorites/favorite_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,10 +9,11 @@ class FavoriteButton extends HookConsumerWidget {
     super.key,
     // required this.isPressedInitial,
     required this.animeId,
+    required this.canAdd,
   });
 
-  // final bool isPressedInitial;
   final int animeId;
+  final bool canAdd;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +29,11 @@ class FavoriteButton extends HookConsumerWidget {
         color: Colors.white,
       ),
       onPressed: () {
+        if (!canAdd) {
+          authGuarder(context);
+          return;
+        }
+
         isPressed.value = !isPressed.value;
         if (isPressed.value) {
           ref.read(favoriteAnimesController.notifier).addFavoriteAnime(animeId);

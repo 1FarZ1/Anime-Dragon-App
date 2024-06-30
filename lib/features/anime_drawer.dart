@@ -86,26 +86,37 @@ class AnimeDrawer extends HookConsumerWidget {
           ),
           ListTile(
             selected: selected == DrawerOption.favorite,
-            title: const Text('المفضلة'),
+            title: Text('المفضلة',
+                style: TextStyle(
+                  color: user.isLoggedIn ? Colors.white : Colors.grey,
+                )),
             onTap: () {
-              changeSelectedItem(DrawerOption.favorite);
-              context.goNamed(
-                AppRoutes.favorite.name,
-              );
+              if (selected != DrawerOption.favorite && user.isLoggedIn) {
+                changeSelectedItem(DrawerOption.favorite);
+                context.goNamed(AppRoutes.favorite.name);
+              }
             },
-            leading: const Icon(Icons.favorite),
+            leading: Icon(Icons.favorite,
+                color: user.isLoggedIn ? Colors.white : Colors.grey),
           ),
           ListTile(
             selected: selected == DrawerOption.myList,
-            title: const Text('قائمتي'),
+            title: Text('قائمتي',
+                style: TextStyle(
+                  color: user.isLoggedIn ? Colors.white : Colors.grey,
+                  // fontWeight: FontWeight.bold,
+                )),
             onTap: () {
-              changeSelectedItem(DrawerOption.myList);
+              if (selected != DrawerOption.myList && user.isLoggedIn) {
+                changeSelectedItem(DrawerOption.myList);
 
- context.goNamed(
-                AppRoutes.myList.name,
-              );
+                context.goNamed(
+                  AppRoutes.myList.name,
+                );
+              }
             },
-            leading: const Icon(Icons.list),
+            leading: Icon(Icons.list,
+                color: user.isLoggedIn ? Colors.white : Colors.grey),
           ),
           ListTile(
             selected: selected == DrawerOption.settings,

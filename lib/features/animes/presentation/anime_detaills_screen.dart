@@ -1,5 +1,6 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
+import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +34,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
           actions: [
             FavoriteButton(
               animeId: animeId,
+              canAdd: ref.watch(userProvider).isLoggedIn
             ),
             const OptionsAction(),
           ],
@@ -51,7 +53,7 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
                   EpisodesView(
                     numberOfEpisodes: anime.lastEpisode,
                   ),
-                  const Center(child: Text('Released Soon ')),
+                  const Center(child: Text('Not Implemented Yet ')),
                   CharactersView(anime.characters),
                 ],
               ),

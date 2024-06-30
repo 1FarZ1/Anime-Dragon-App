@@ -1,14 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:anime_slayer/features/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
-import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 
-import 'anime_card.dart';
-
-//TODO: Add AsyncValue Widget
+import 'anime_grid_card.dart';
+import 'anime_list_card.dart';
 
 //TODO: I really need to fix the  auth logic in this app
 class AnimesView extends ConsumerWidget {
@@ -17,6 +16,7 @@ class AnimesView extends ConsumerWidget {
     required this.animes,
     required this.onRefresh,
     required this.onError,
+    this.viewStyle = ViewStyle.grid,
   });
 
   final AsyncValue<List<AnimeModel>> animes;
@@ -24,6 +24,8 @@ class AnimesView extends ConsumerWidget {
   final Future<void> Function() onRefresh;
 
   final Function() onError;
+
+  final ViewStyle viewStyle;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,10 +43,22 @@ class AnimesView extends ConsumerWidget {
                 ],
               ),
             ),
-        data: (animes) => AnimesGridView(
-              animes: animes,
-              onRefresh: onRefresh,
-            ));
+        data: (animes) {
+          if (animes.isEmpty) {
+            return const Center(
+              child: Text('No animes found'),
+            );
+          }
+          return viewStyle == ViewStyle.grid
+              ? AnimesGridView(
+                  animes: animes,
+                  onRefresh: onRefresh,
+                )
+              : AnimesListView(
+                  animes: animes,
+                  onRefresh: onRefresh,
+                );
+        });
   }
 }
 
@@ -76,11 +90,38 @@ class AnimesGridView extends StatelessWidget {
         ),
         children: [
           ...animes.map(
-            (anime) => AnimeCard(
+            (anime) => AnimeGridCard(
               anime: anime,
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class AnimesListView extends StatelessWidget {
+  const AnimesListView({
+    super.key,
+    required this.animes,
+    required this.onRefresh,
+  });
+
+  final List<AnimeModel> animes;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: onRefresh,
+      child: ListView.builder(
+        itemCount: animes.length,
+        itemBuilder: (context, index) {
+          final anime = animes[index];
+          return AnimeListCard(
+            anime: anime,
+          );
+        },
       ),
     );
   }

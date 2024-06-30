@@ -8,18 +8,15 @@ import 'package:go_router/go_router.dart';
 import '../../../../router/interfaces.dart';
 import '../anime_detaills_screen.dart';
 
-class AnimeCard extends StatelessWidget {
-  const AnimeCard({super.key, required this.anime});
+class AnimeGridCard extends StatelessWidget {
+  const AnimeGridCard({super.key, required this.anime});
 
   final AnimeModel anime;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(AppRoutes.animeDetails.name,
-            extra: anime.id
-        );
-            
+        context.pushNamed(AppRoutes.animeDetails.name, extra: anime.id);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(

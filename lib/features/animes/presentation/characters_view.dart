@@ -11,7 +11,12 @@ class CharactersView extends StatelessWidget {
   final List<CharacterModel> characters;
   @override
   Widget build(BuildContext context) {
-    // put  the main characters in first list view horizental alone , then put the support in second
+    final mainCharacters = characters
+        .where((element) => element.role == CharacterType.main)
+        .toList();
+    final supportCharacters = characters
+        .where((element) => element.role == CharacterType.support)
+        .toList();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: characters.isEmpty
@@ -30,10 +35,10 @@ class CharactersView extends StatelessWidget {
                   height: 150.h,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: characters.length,
+                    itemCount: mainCharacters.length,
                     itemBuilder: (context, index) {
                       return CharacterCard(
-                        character: characters[index],
+                        character: mainCharacters[index],
                       );
                     },
                   ),
@@ -48,10 +53,10 @@ class CharactersView extends StatelessWidget {
                   height: 200.h,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: characters.length,
+                    itemCount: supportCharacters.length,
                     itemBuilder: (context, index) {
                       return CharacterCard(
-                        character: characters[index],
+                        character: supportCharacters[index],
                       );
                     },
                   ),

@@ -29,7 +29,6 @@ final animeSearchProvider = FutureProvider.family
 });
 
 final isFavoriteAnimeProvider = Provider.family<bool, int>((ref, id) {
-  // get the favorite anime
   if (ref.watch(favoriteAnimesController).asData == null) {
     return false;
   }

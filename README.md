@@ -24,7 +24,7 @@
 - Add Animes To Favorite List
 - Add Animes To Watch List
 - Add Reviews To Animes and see them
-- Custom Filtering [Pending]
+- Custom Filtering [Pending]m
 - Grid View and List View [Pending]
 - Stats Tab in Anime Details [Pending]
 - Sign in and Sign up

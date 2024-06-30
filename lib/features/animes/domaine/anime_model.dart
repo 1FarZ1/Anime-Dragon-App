@@ -89,8 +89,8 @@ class AnimeModel {
               ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
           .toList(),
       reviewsCount: map['numberOfReviews'] as int,
-      tags: List<TagModel>.from(
-          map['tags']?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
+      tags: List<TagModel>.from(map['tags']
+          ?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
     );
   }
 
@@ -215,7 +215,9 @@ class CharacterModel {
     return CharacterModel(
       id: map['id'] as int,
       name: map['name'] as String,
-      role: map['role'] == 'main' ? CharacterType.main : CharacterType.support,
+      role: map['role'].toString().toLowerCase() == 'main'
+          ? CharacterType.main
+          : CharacterType.support,
       imageUrl: map['image'] as String,
     );
   }

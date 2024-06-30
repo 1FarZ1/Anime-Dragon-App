@@ -78,6 +78,7 @@ class AuthScreen extends HookConsumerWidget {
             content: Text('تم تسجيل الدخول بنجاح'),
           ),
         );
+        context.pop();
       }
 
       if (next.error != null) {
@@ -90,7 +91,7 @@ class AuthScreen extends HookConsumerWidget {
     }));
 
     return Scaffold(
-      // back buttonm
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
