@@ -14,13 +14,16 @@ class AnimeModel {
   final int lastEpisode;
   final int minAge;
   final DateTime releaseDate;
+  final DateTime? endDate;
   final String source;
   final StudioModel studio;
   final List<CharacterModel> characters;
   final int reviewsCount;
   final List<TagModel> tags;
+  final bool isFavorite;
+  final bool isInMyList;
+  // final bool isWatched;
   // final List<AnimeModel> relatedAnimes;
-
   AnimeModel({
     required this.id,
     required this.title,
@@ -36,24 +39,29 @@ class AnimeModel {
     required this.characters,
     required this.reviewsCount,
     required this.tags,
+    required this.isFavorite,
+    required this.isInMyList,
+    required this.endDate,
   });
 
-  AnimeModel copyWith({
-    int? id,
-    String? title,
-    String? description,
-    String? imageUrl,
-    double? rating,
-    bool? isEnded,
-    int? lastEpisode,
-    int? minAge,
-    DateTime? releaseDate,
-    String? source,
-    StudioModel? studio,
-    List<CharacterModel>? characters,
-    int? reviewsCount,
-    List<TagModel>? tags,
-  }) {
+  AnimeModel copyWith(
+      {int? id,
+      String? title,
+      String? description,
+      String? imageUrl,
+      double? rating,
+      bool? isEnded,
+      int? lastEpisode,
+      int? minAge,
+      DateTime? releaseDate,
+      String? source,
+      StudioModel? studio,
+      List<CharacterModel>? characters,
+      int? reviewsCount,
+      List<TagModel>? tags,
+      bool? isFavorite,
+      bool? isInMyList,
+      DateTime? endDate}) {
     return AnimeModel(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -69,6 +77,9 @@ class AnimeModel {
       characters: characters ?? this.characters,
       reviewsCount: reviewsCount ?? this.reviewsCount,
       tags: tags ?? this.tags,
+      isFavorite: isFavorite ?? this.isFavorite,
+      isInMyList: isInMyList ?? this.isInMyList,
+      endDate: endDate ?? this.endDate,
     );
   }
 
@@ -84,6 +95,9 @@ class AnimeModel {
       minAge: map['minAge'] as int,
       source: map['source'] as String,
       releaseDate: DateTime.parse(map['releaseDate'] as String),
+      endDate: map['endDate'] == null
+          ? null
+          : DateTime.parse(map['endDate'] as String),
       studio: StudioModel.fromMap(map['studio'] as Map<String, dynamic>),
       characters: List<CharacterModel>.from(map['characters']
               ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
@@ -91,6 +105,8 @@ class AnimeModel {
       reviewsCount: map['numberOfReviews'] as int,
       tags: List<TagModel>.from(map['tags']
           ?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
+      isFavorite: map['isFavorite'] as bool? ?? false,
+      isInMyList: map['isInMyList'] as bool? ?? false,
     );
   }
 
@@ -118,7 +134,10 @@ class AnimeModel {
         minAge.hashCode ^
         releaseDate.hashCode ^
         source.hashCode ^
-        studio.hashCode;
+        studio.hashCode ^
+        isFavorite.hashCode ^
+        isInMyList.hashCode ^
+        endDate.hashCode;
   }
 }
 

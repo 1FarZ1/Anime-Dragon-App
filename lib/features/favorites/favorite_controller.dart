@@ -13,28 +13,27 @@ class FavoriteAnimesController
     extends StateNotifier<AsyncValue<List<AnimeModel>>> {
   FavoriteAnimesController(this.animesRepository)
       : super(const AsyncValue.loading()) {
-    fetchFavoriteAnimes();
+    // fetchFavoriteAnimes();
   }
 
   final AnimesRepository animesRepository;
 
-  void fetchFavoriteAnimes() async {
-    state = const AsyncValue.loading();
-    try {
-      final animes = await animesRepository.getFavoriteAnime();
-      state = AsyncValue.data(animes);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
-    }
-  }
+  // void fetchFavoriteAnimes() async {
+  //   state = const AsyncValue.loading();
+  //   try {
+  //     final animes = await animesRepository.getFavoriteAnime();
+  //     state = AsyncValue.data(animes);
+  //   } catch (e, st) {
+  //     state = AsyncValue.error(e, st);
+  //   }
+  // }
 
   void addFavoriteAnime(int animeId) async {
     try {
       state = const AsyncValue.loading();
-      final anime = await animesRepository.addFavoriteAnime(animeId);
-      state = AsyncValue.data([...state.asData!.value, anime]);
+       await animesRepository.addFavoriteAnime(animeId);
+      // state = AsyncValue.data([...state.asData!.value, anime]);
 
-      // fetchFavoriteAnimes();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
@@ -45,9 +44,9 @@ class FavoriteAnimesController
       state = const AsyncValue.loading();
       await animesRepository.removeFavoriteAnime(animeId);
       // logger.i(state.value);
-      state = AsyncValue.data(state.asData!.value
-          .where((element) => element.id != animeId)
-          .toList());
+      // state = AsyncValue.data(state.asData!.value
+      //     .where((element) => element.id != animeId)
+      //     .toList());
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }

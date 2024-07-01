@@ -1,3 +1,4 @@
+import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:anime_slayer/features/animes/presentation/widgets/add_button.dart';
 import 'package:anime_slayer/features/favorites/favorite_controller.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +18,17 @@ class FavoriteButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    getInitialValue() {
-      final list = ref.watch(favoriteAnimesController).asData?.value ?? [];
-      return list.any((element) => element.id == animeId);
-    }
+    final isFav = ref
+        .watch(animesControllerProvider)
+        .animes
+        .asData!
+        .value
+        .firstWhere((element) => element.id == animeId)
+        .isFavorite;
 
-    final isPressed = useState(getInitialValue());
     return IconButton(
       icon: Icon(
-        isPressed.value ? Icons.favorite : Icons.favorite_border,
+        isFav ? Icons.favorite : Icons.favorite_border,
         color: Colors.white,
       ),
       onPressed: () {
@@ -34,14 +37,14 @@ class FavoriteButton extends HookConsumerWidget {
           return;
         }
 
-        isPressed.value = !isPressed.value;
-        if (isPressed.value) {
+        if (!isFav) {
           ref.read(favoriteAnimesController.notifier).addFavoriteAnime(animeId);
         } else {
           ref
               .read(favoriteAnimesController.notifier)
               .removeFavoriteAnime(animeId);
         }
+        ref.read(animesControllerProvider.notifier).toggleFavorite(animeId);
       },
     );
   }

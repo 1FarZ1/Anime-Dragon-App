@@ -92,7 +92,8 @@ class DescriptionSection extends HookWidget {
                         name: 'عدد الحلقات',
                         value: anime.lastEpisode.toString()),
                     10.verticalSpace,
-                    const InfoItem(name: 'الى', value: '?'),
+                    InfoItem(
+                        name: 'الى', value: anime.endDate?.toSimpleDate ?? '?'),
                     10.verticalSpace,
                     InfoItem(
                       name: ' العنوان بالانجليزي',

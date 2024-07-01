@@ -28,15 +28,15 @@ final animeSearchProvider = FutureProvider.family
   return animes;
 });
 
-final isFavoriteAnimeProvider = Provider.family<bool, int>((ref, id) {
-  if (ref.watch(favoriteAnimesController).asData == null) {
-    return false;
-  }
-  final favoriteAnimes = ref.watch(favoriteAnimesController).asData!.value;
-  final isFavorite = favoriteAnimes.any((element) => element.id == id);
+// final isFavoriteAnimeProvider = Provider.family<bool, int>((ref, id) {
+//   if (ref.watch(favoriteAnimesController).asData == null) {
+//     return false;
+//   }
+//   final favoriteAnimes = ref.watch(favoriteAnimesController).asData!.value;
+//   final isFavorite = favoriteAnimes.any((element) => element.id == id);
 
-  return isFavorite;
-});
+//   return isFavorite;
+// });
 
 final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
   final animes = ref.watch(animesControllerProvider).animes.asData?.value;
@@ -61,5 +61,25 @@ class AnimeController extends StateNotifier<AnimeState> {
       log('Error while fetching animes', error: e, stackTrace: st);
       state = state.copyWith(animes: AsyncValue.error(e, st));
     }
+  }
+
+  void toggleisInList(animeId) {
+    final animes = state.animes.asData?.value;
+    if (animes == null) return;
+    final anime = animes.firstWhere((element) => element.id == animeId);
+    final newAnime = anime.copyWith(isInMyList: !anime.isInMyList);
+    final newAnimes =
+        animes.map((e) => e.id == animeId ? newAnime : e).toList();
+    state = state.copyWith(animes: AsyncValue.data(newAnimes));
+  }
+
+  void toggleFavorite(animeId) {
+    final animes = state.animes.asData?.value;
+    if (animes == null) return;
+    final anime = animes.firstWhere((element) => element.id == animeId);
+    final newAnime = anime.copyWith(isFavorite: !anime.isFavorite);
+    final newAnimes =
+        animes.map((e) => e.id == animeId ? newAnime : e).toList();
+    state = state.copyWith(animes: AsyncValue.data(newAnimes));
   }
 }

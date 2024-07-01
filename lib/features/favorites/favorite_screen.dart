@@ -1,5 +1,7 @@
 import 'package:anime_slayer/features/anime_drawer.dart';
+import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:anime_slayer/features/favorites/favorite_controller.dart';
+import 'package:anime_slayer/features/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +12,8 @@ class FavoriteScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final animes = ref.watch(favoriteAnimesController);
-
+    final animes = ref.watch(animesControllerProvider);
+    final viewStyle = ref.watch(viewProvider);
     return Scaffold(
       // this is redunancy and should be avoided
       drawer: const AnimeDrawer(),
@@ -19,23 +21,14 @@ class FavoriteScreen extends ConsumerWidget {
         leading: const OpenDrawerButton(),
         title: const Text('المفضلة'),
         actions: [
-          // saech
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // context.pushNamed(
-              //   AppRoutes.search.name,
-              // );
+         
             },
           ),
           // list view
-          IconButton(
-            icon: const Icon(Icons.grid_view),
-            onPressed: () {
-              // ref.read(animeViewControllerProvider.notifier).switchView();
-            },
-          ),
-
+          SwitchViewWidget(viewStyle: viewStyle),
           IconButton(
             icon: const Icon(Icons.more_vert),
             onPressed: () {
@@ -45,13 +38,13 @@ class FavoriteScreen extends ConsumerWidget {
         ],
       ),
       body: AnimesView(
-        animes: animes,
+        animeSync: animes.favoriteAnimes,
         onRefresh: () async {
-          ref.invalidate(favoriteAnimesController);
+          // ref.invalidate(favoriteAnimesController);
         },
         onError: () {
           ref.invalidate(
-            favoriteAnimesController,
+            animesControllerProvider,
           );
         },
       ),

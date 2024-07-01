@@ -14,14 +14,15 @@ import 'animes/presentation/logic/anime_controller.dart';
 
 enum ViewStyle { grid, list }
 
+
+final viewProvider = StateProvider<ViewStyle>((ref) => ViewStyle.grid);
 class MainView extends HookConsumerWidget {
   const MainView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final animes = ref.watch(animesControllerProvider).animes;
-    final viewStyle = useState<ViewStyle>(ViewStyle.grid);
-
+    final viewStyle = ref.watch(viewProvider);
     return Scaffold(
         drawer: const AnimeDrawer(),
         appBar: AppBar(
@@ -39,16 +40,7 @@ class MainView extends HookConsumerWidget {
                 );
               },
             ),
-            IconButton(
-              icon: Icon(viewStyle.value == ViewStyle.grid
-                  ? Icons.list
-                  : Icons.grid_view),
-              onPressed: () {
-                viewStyle.value = viewStyle.value == ViewStyle.grid
-                    ? ViewStyle.list
-                    : ViewStyle.grid;
-              },
-            ),
+            SwitchViewWidget(viewStyle: viewStyle),
             IconButton(
               icon: const Icon(Icons.report, color: Colors.red),
               onPressed: () {
@@ -61,14 +53,37 @@ class MainView extends HookConsumerWidget {
           children: [
             Expanded(
                 child: AnimesView(
-              animes: animes,
+              animesAsync: animes,
               onError: () => ref.invalidate(animesControllerProvider),
               onRefresh: () async {
                 ref.invalidate(animesControllerProvider);
               },
-              viewStyle: viewStyle.value,
+              viewStyle: viewStyle,
             )),
           ],
         ));
+  }
+}
+
+class SwitchViewWidget extends ConsumerWidget {
+  const SwitchViewWidget({
+    super.key,
+    required this.viewStyle,
+  });
+
+  final ViewStyle viewStyle;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: Icon(viewStyle == ViewStyle.grid
+          ? Icons.list
+          : Icons.grid_view),
+      onPressed: () {
+        ref.read(viewProvider.notifier).state = viewStyle == ViewStyle.grid
+            ? ViewStyle.list
+            : ViewStyle.grid;
+      },
+    );
   }
 }

@@ -13,13 +13,15 @@ import 'anime_list_card.dart';
 class AnimesView extends ConsumerWidget {
   const AnimesView({
     super.key,
-    required this.animes,
+    this.animesAsync,
+    this.animeSync,
     required this.onRefresh,
     required this.onError,
     this.viewStyle = ViewStyle.grid,
-  });
+  }) : assert(animesAsync != null || animeSync != null);
 
-  final AsyncValue<List<AnimeModel>> animes;
+  final AsyncValue<List<AnimeModel>>? animesAsync;
+  final List<AnimeModel>? animeSync;
 
   final Future<void> Function() onRefresh;
 
@@ -29,36 +31,46 @@ class AnimesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return animes.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: $e'),
-                  ElevatedButton(
-                    onPressed: onError,
-                    child: const Text('Retry'),
+    return animeSync != null
+        ? viewStyle == ViewStyle.grid
+            ? AnimesGridView(
+                animes: animeSync!,
+                onRefresh: onRefresh,
+              )
+            : AnimesListView(
+                animes: animeSync!,
+                onRefresh: onRefresh,
+              )
+        : animesAsync!.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, st) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Error: $e'),
+                      ElevatedButton(
+                        onPressed: onError,
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-        data: (animes) {
-          if (animes.isEmpty) {
-            return const Center(
-              child: Text('No animes found'),
-            );
-          }
-          return viewStyle == ViewStyle.grid
-              ? AnimesGridView(
-                  animes: animes,
-                  onRefresh: onRefresh,
-                )
-              : AnimesListView(
-                  animes: animes,
-                  onRefresh: onRefresh,
+                ),
+            data: (animes) {
+              if (animes.isEmpty) {
+                return const Center(
+                  child: Text('No animes found'),
                 );
-        });
+              }
+              return viewStyle == ViewStyle.grid
+                  ? AnimesGridView(
+                      animes: animes,
+                      onRefresh: onRefresh,
+                    )
+                  : AnimesListView(
+                      animes: animes,
+                      onRefresh: onRefresh,
+                    );
+            });
   }
 }
 

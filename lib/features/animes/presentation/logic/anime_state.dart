@@ -10,6 +10,15 @@ class AnimeState {
     this.animes = const AsyncValue.loading(),
   });
 
+
+  List<AnimeModel> get favoriteAnimes {
+    return animes.asData!.value.where((element) => element.isFavorite).toList();
+  }
+
+  List<AnimeModel> get myAnimes {
+    return animes.asData!.value.where((element) => element.isInMyList).toList();
+  }
+
   AnimeState copyWith({
     AsyncValue<List<AnimeModel>>? animes,
   }) {

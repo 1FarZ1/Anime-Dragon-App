@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:anime_slayer/features/animeList/anime_list_controller.dart';
 import 'package:anime_slayer/features/animes/data/animes_repository.dart';
+import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 //TODO
 void authGuarder(BuildContext context) {
@@ -34,7 +36,7 @@ class AddReviewButton extends ConsumerWidget {
     return GestureDetector(
       onTap: () async {
         if (!canAdd) {
-         authGuarder(context);
+          authGuarder(context);
           return;
         }
 
@@ -71,45 +73,46 @@ class AddReviewButton extends ConsumerWidget {
   }
 }
 
-class AddToMyListButton extends ConsumerWidget {
-  const AddToMyListButton({
-    super.key,
-    required this.text,
-    required this.icon,
-    required this.animeId,
-    required this.canAdd,
-  });
+class AddToMyListButton extends HookConsumerWidget {
+  const AddToMyListButton(
+      {super.key,
+      required this.text,
+      required this.icon,
+      required this.animeId,
+      required this.canAdd,
+      required this.initialValue});
 
   final String text;
   final IconData icon;
   final int animeId;
   final bool canAdd;
+  final bool initialValue;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    checkIfIsInList() {
-      final list = ref.watch(listAnimesController).asData?.value ?? [];
-      return list.any((element) => element.id == animeId);
-    }
-
+    final isInList = useState<bool>(initialValue);
     return GestureDetector(
       onTap: () {
         if (!canAdd) {
           authGuarder(context);
           return;
         }
-
-        if (checkIfIsInList()) {
+        if (isInList.value) {
           ref.read(listAnimesController.notifier).removeListAnime(animeId);
+          ref.read(animesControllerProvider.notifier).toggleisInList(animeId);
+
+          isInList.value = !isInList.value;
           return;
         }
+        isInList.value = !isInList.value;
+        ref.read(animesControllerProvider.notifier).toggleisInList(animeId);
         ref.read(listAnimesController.notifier).addListAnime(animeId);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            checkIfIsInList() ? Icons.check : icon,
+            isInList.value ? Icons.check : icon,
             color: Colors.grey,
             size: 30,
           ),

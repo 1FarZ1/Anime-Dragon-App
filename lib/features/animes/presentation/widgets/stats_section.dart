@@ -40,6 +40,7 @@ class StatsSection extends ConsumerWidget {
             icon: Icons.playlist_add,
             animeId: anime.id,
             canAdd: user.isLoggedIn,
+            initialValue: anime.isInMyList,
           )),
         ],
       ),
