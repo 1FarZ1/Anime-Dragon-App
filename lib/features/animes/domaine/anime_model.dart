@@ -4,6 +4,8 @@ import 'dart:developer';
 
 import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.dart';
 
+import '../../../common/character_type.dart';
+
 class AnimeModel {
   final int id;
   final String title;
@@ -46,26 +48,26 @@ class AnimeModel {
     required this.votes,
   });
 
-  AnimeModel copyWith(
-      {int? id,
-      String? title,
-      String? description,
-      String? imageUrl,
-      double? rating,
-      bool? isEnded,
-      int? lastEpisode,
-      int? minAge,
-      DateTime? releaseDate,
-      String? source,
-      StudioModel? studio,
-      List<CharacterModel>? characters,
-      int? reviewsCount,
-      List<TagModel>? tags,
-      bool? isFavorite,
-      bool? isInMyList,
-      DateTime? endDate,
-      List<Votes>? votes,
-      }) {
+  AnimeModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    String? imageUrl,
+    double? rating,
+    bool? isEnded,
+    int? lastEpisode,
+    int? minAge,
+    DateTime? releaseDate,
+    String? source,
+    StudioModel? studio,
+    List<CharacterModel>? characters,
+    int? reviewsCount,
+    List<TagModel>? tags,
+    bool? isFavorite,
+    bool? isInMyList,
+    DateTime? endDate,
+    List<Votes>? votes,
+  }) {
     return AnimeModel(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -90,32 +92,33 @@ class AnimeModel {
 
   factory AnimeModel.fromMap(Map<String, dynamic> map) {
     return AnimeModel(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      description: map['description'] as String,
-      imageUrl: map['image'] as String,
-      rating: double.parse(map['rating'].toString()),
-      isEnded: map['Ended'] as bool,
-      lastEpisode: map['lastEpisode'] as int,
-      minAge: map['minAge'] as int,
-      source: map['source'] as String,
-      releaseDate: DateTime.parse(map['releaseDate'] as String),
-      endDate: map['endDate'] == null
-          ? null
-          : DateTime.parse(map['endDate'] as String),
-      studio: StudioModel.fromMap(map['studio'] as Map<String, dynamic>),
-      characters: List<CharacterModel>.from(map['characters']
-              ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
-          .toList(),
-      reviewsCount: map['numberOfReviews'] as int,
-      tags: List<TagModel>.from(map['tags']
-          ?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
-      isFavorite: map['isFavorite'] as bool? ?? false,
-      isInMyList: map['isInMyList'] as bool? ?? false,
-      //  votes are like this {"1":2,"2":3}
-      votes : List<Votes>.from(map['votes']
-          ?.map((x) => Votes(x['rating'] as int, x['votes'] as int))),
-      
+        id: map['id'] as int,
+        title: map['title'] as String,
+        description: map['description'] as String,
+        imageUrl: map['image'] as String,
+        rating: double.parse(map['rating'].toString()),
+        isEnded: map['Ended'] as bool,
+        lastEpisode: map['lastEpisode'] as int,
+        minAge: map['minAge'] as int,
+        source: map['source'] as String,
+        releaseDate: DateTime.parse(map['releaseDate'] as String),
+        endDate: map['endDate'] == null
+            ? null
+            : DateTime.parse(map['endDate'] as String),
+        studio: StudioModel.fromMap(map['studio'] as Map<String, dynamic>),
+        characters: List<CharacterModel>.from(map['characters']
+                ?.map((x) => CharacterModel.fromMap(x as Map<String, dynamic>)))
+            .toList(),
+        reviewsCount: map['numberOfReviews'] as int,
+        tags: List<TagModel>.from(map['tags']
+            ?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
+        isFavorite: map['isFavorite'] as bool? ?? false,
+        isInMyList: map['isInMyList'] as bool? ?? false,
+        //  votes are like this {"1":2,"2":3}
+        votes: map['votes'] == null
+            ? []
+            : List<Votes>.from(map['votes']
+                ?.map((x) => Votes.fromMap(x as Map<String, dynamic>)))
     );
   }
 
@@ -291,4 +294,12 @@ class Votes {
   final int votes;
 
   Votes(this.category, this.votes);
+
+  // from map
+  factory Votes.fromMap(Map<String, dynamic> map) {
+    return Votes(
+      map['rating'] as int,
+      map['votes'] as int,
+    );
+  }
 }

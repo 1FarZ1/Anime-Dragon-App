@@ -18,7 +18,6 @@ import 'widgets/favorite_button.dart';
 import 'widgets/options_action.dart';
 import 'top_bar_view.dart';
 
-
 class AnimeDetaillsScreen extends HookConsumerWidget {
   const AnimeDetaillsScreen({super.key, required this.animeId});
 
@@ -26,7 +25,12 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabController = useTabController(initialLength: 4);
-    final anime = ref.watch(singleAnimeProvider(animeId));
+    final anime = ref
+        .watch(animesControllerProvider)
+        .animes
+        .asData
+        ?.value
+        .firstWhere((element) => element.id == animeId);
     return Scaffold(
         appBar: AppBar(
           leading: const CustomBackButton(),
@@ -52,12 +56,16 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  MainDetaillView(anime: anime),
+                  RefreshIndicator(
+                      onRefresh: () async {
+                        ref.invalidate(singleAnimeProvider(animeId));
+                      },
+                      child: MainDetaillView(anime: anime)),
                   EpisodesView(
                     numberOfEpisodes: anime.lastEpisode,
                     animeId: anime.id,
                   ),
-                  StatsScreen(votes:anime.votes),
+                  StatsScreen(votes: anime.votes),
                   CharactersView(anime.characters),
                 ],
               ),
@@ -65,9 +73,4 @@ class AnimeDetaillsScreen extends HookConsumerWidget {
           ],
         ));
   }
-}
-
-enum CharacterType {
-  main,
-  support,
 }

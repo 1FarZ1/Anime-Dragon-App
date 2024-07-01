@@ -39,7 +39,7 @@ final animeSearchProvider = FutureProvider.family
 // });
 
 final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
-  final animes = ref.watch(animesControllerProvider).animes.asData?.value;
+  final animes = ref.watch(animesControllerProvider.select((value) => value.animes.asData?.value));
   final anime = animes?.firstWhere((element) => element.id == id);
 
   return anime;
@@ -81,5 +81,25 @@ class AnimeController extends StateNotifier<AnimeState> {
     final newAnimes =
         animes.map((e) => e.id == animeId ? newAnime : e).toList();
     state = state.copyWith(animes: AsyncValue.data(newAnimes));
+  }
+
+  void addReviewToAnime(AddReviewRequest addReviewRequest) async {
+    try {
+      final AddReviewResponse addReviewData =
+          await animesRepository.addReviewToAnime(addReviewRequest);
+      final animes = state.animes.asData?.value;
+      if (animes == null) return;
+      final anime = animes
+          .firstWhere((element) => element.id == addReviewRequest.animeId);
+      final newAnime =
+          anime.copyWith(rating: addReviewData.newRating.toDouble());
+      final newAnimeWithVotes = newAnime.copyWith(votes: addReviewData.votes);
+      final newAnimes = animes
+          .map((e) => e.id == addReviewRequest.animeId ? newAnimeWithVotes : e)
+          .toList();
+      state = state.copyWith(animes: AsyncValue.data(newAnimes));
+    } catch (e, st) {
+      log('Error while adding review to anime', error: e, stackTrace: st);
+    }
   }
 }

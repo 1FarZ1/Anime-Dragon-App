@@ -36,6 +36,27 @@ class AddReviewRequest {
   }
 }
 
+class AddReviewResponse {
+  final int newRating;
+  final int numReviewers;
+  final List<Votes> votes;
+
+  AddReviewResponse({
+    required this.newRating,
+    required this.votes,
+    required this.numReviewers,
+  });
+
+  // from json
+  factory AddReviewResponse.fromMap(Map<String, dynamic> map) {
+    return AddReviewResponse(
+      newRating: map['rating']['averageRating'],
+      numReviewers: map['rating']['numberOfReviews'],
+      votes: List<Votes>.from(map['votes'].map((x) => Votes.fromMap(x))),
+    );
+  }
+}
+
 abstract class AnimesRepository {
   Future<List<AnimeModel>> fetchAnimes();
   Future<List<AnimeModel>> searchAnimes(
@@ -46,7 +67,7 @@ abstract class AnimesRepository {
   Future<AnimeModel> addFavoriteAnime(int animeId);
   Future<void> removeFavoriteAnime(int animeId);
 
-  Future<void> addReviewToAnime(AddReviewRequest addReviewRequest);
+  Future<AddReviewResponse> addReviewToAnime(AddReviewRequest addReviewRequest);
 
   //collections
   Future<List<AnimeModel>> getMyCollection();
@@ -94,8 +115,11 @@ class AnimesRepositoryImpl implements AnimesRepository {
   }
 
   @override
-  Future<void> addReviewToAnime(AddReviewRequest addReviewRequest) async {
-    await dioClient.post(EndPoints.addReview, data: addReviewRequest.toMap());
+  Future<AddReviewResponse> addReviewToAnime(
+      AddReviewRequest addReviewRequest) async {
+    final resposne = await dioClient.post(EndPoints.addReview,
+        data: addReviewRequest.toMap());
+    return AddReviewResponse.fromMap(resposne.data);
   }
 
   @override

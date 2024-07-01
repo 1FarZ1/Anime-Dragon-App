@@ -1,0 +1,4 @@
+enum CharacterType {
+  main,
+  support,
+}

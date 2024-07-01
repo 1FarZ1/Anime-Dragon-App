@@ -5,7 +5,6 @@ import 'package:anime_slayer/features/animes/data/animes_repository.dart';
 import 'package:anime_slayer/features/animes/presentation/logic/anime_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,7 +45,7 @@ class AddReviewButton extends ConsumerWidget {
               return const AddReviewDialog();
             });
         if (value != -1) {
-          ref.read(animesRepositoryProvider).addReviewToAnime(
+          ref.read(animesControllerProvider.notifier).addReviewToAnime(
               AddReviewRequest(animeId: animeId, rating: value));
         } else {
           log('canceled');

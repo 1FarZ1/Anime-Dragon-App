@@ -1,9 +1,12 @@
 import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ReviewersWidget extends StatelessWidget {
+import '../logic/anime_controller.dart';
+
+class ReviewersWidget extends ConsumerWidget {
   const ReviewersWidget({
     super.key,
     required this.anime,
@@ -14,7 +17,7 @@ class ReviewersWidget extends StatelessWidget {
   final bool isGlobal;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final rating = isGlobal ? 6.89 : anime.rating;
     final reviewers = isGlobal ? 3682 : anime.reviewsCount;
 
@@ -26,9 +29,7 @@ class ReviewersWidget extends StatelessWidget {
                 color: Colors.orange,
                 size: 30,
               )
-            :
-            // image of myAnimeList
-            Image.asset(
+            : Image.asset(
                 'assets/mal.png',
                 width: 30,
                 height: 30,

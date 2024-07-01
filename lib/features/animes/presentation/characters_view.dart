@@ -3,6 +3,7 @@ import 'package:anime_slayer/features/animes/presentation/anime_detaills_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../common/character_type.dart';
 import 'character_card.dart';
 
 class CharactersView extends StatelessWidget {
