@@ -17,6 +17,7 @@ class AnimeListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        //TODO: CAN BE optimized , by getting extra data only on pressed animes  
         context.pushNamed(AppRoutes.animeDetails.name, extra: anime.id);
       },
       child: Container(

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../animes/presentation/widgets/anime_grid.dart';
 import 'anime_list_controller.dart';
+import 'open_drawer_button.dart';
 
 class AnimeListScreen extends ConsumerWidget {
   const AnimeListScreen({super.key});
@@ -51,25 +52,8 @@ class AnimeListScreen extends ConsumerWidget {
             listAnimesController,
           );
         },
+        viewStyle: viewStyle,
       ),
     );
-  }
-}
-
-class OpenDrawerButton extends StatelessWidget {
-  const OpenDrawerButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return IconButton(
-        icon: const Icon(Icons.menu),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-      );
-    });
   }
 }

@@ -47,6 +47,8 @@ class FavoriteScreen extends ConsumerWidget {
             animesControllerProvider,
           );
         },
+
+        viewStyle: viewStyle,
       ),
     );
   }
