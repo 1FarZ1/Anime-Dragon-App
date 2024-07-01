@@ -94,7 +94,7 @@ class AnimeGridCard extends StatelessWidget {
                 ),
                 5.horizontalSpace,
                 Text(
-                  anime.rating.toString(),
+                  anime.rating.toStringAsFixed(1),
                   style: const TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,

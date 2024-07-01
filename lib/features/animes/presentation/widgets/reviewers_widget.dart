@@ -39,7 +39,7 @@ class ReviewersWidget extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '$rating',
+              rating.toStringAsFixed(1),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,

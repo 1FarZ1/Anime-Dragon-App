@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:anime_slayer/features/animes/presentation/search_option.dart';
+import 'package:anime_slayer/features/auth/presentation/user_notifier.dart';
 import 'package:anime_slayer/features/favorites/favorite_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anime_slayer/features/animes/data/animes_repository.dart';
@@ -10,9 +11,7 @@ import 'anime_state.dart';
 
 final animesControllerProvider =
     StateNotifierProvider<AnimeController, AnimeState>((ref) {
-  return AnimeController(
-    ref.watch(animesRepositoryProvider),
-  );
+  return AnimeController(ref.watch(animesRepositoryProvider), ref);
 });
 
 final animeSearchProvider = FutureProvider.family
@@ -39,19 +38,28 @@ final animeSearchProvider = FutureProvider.family
 // });
 
 final singleAnimeProvider = Provider.family<AnimeModel?, int>((ref, id) {
-  final animes = ref.watch(animesControllerProvider.select((value) => value.animes.asData?.value));
+  final animes = ref.watch(
+      animesControllerProvider.select((value) => value.animes.asData?.value));
   final anime = animes?.firstWhere((element) => element.id == id);
 
   return anime;
 });
 
 class AnimeController extends StateNotifier<AnimeState> {
-  AnimeController(this.animesRepository) : super(AnimeState()) {
+  AnimeController(this.animesRepository, this.ref) : super(AnimeState()) {
     fetchAnimes();
+
+    ref.listen(userProvider, (_, next) {
+      if (next.isLoggedIn) {
+        fetchAnimes();
+      } else {
+        fetchAnimes();
+      }
+    });
   }
 
   final AnimesRepository animesRepository;
-
+  final Ref ref;
   void fetchAnimes() async {
     state = state.copyWith(animes: const AsyncValue.loading());
     try {
@@ -89,13 +97,18 @@ class AnimeController extends StateNotifier<AnimeState> {
           await animesRepository.addReviewToAnime(addReviewRequest);
       final animes = state.animes.asData?.value;
       if (animes == null) return;
-      final anime = animes
+      AnimeModel anime = animes
           .firstWhere((element) => element.id == addReviewRequest.animeId);
-      final newAnime =
-          anime.copyWith(rating: addReviewData.newRating.toDouble());
-      final newAnimeWithVotes = newAnime.copyWith(votes: addReviewData.votes);
+
+      if (!anime.isReviewed) {
+        anime = anime.copyWith(isReviewed: true);
+      }
+      final newAnime = anime.copyWith(
+          rating: addReviewData.newRating,
+          reviewsCount: addReviewData.numReviewers,
+          votes: addReviewData.votes);
       final newAnimes = animes
-          .map((e) => e.id == addReviewRequest.animeId ? newAnimeWithVotes : e)
+          .map((e) => e.id == addReviewRequest.animeId ? newAnime : e)
           .toList();
       state = state.copyWith(animes: AsyncValue.data(newAnimes));
     } catch (e, st) {

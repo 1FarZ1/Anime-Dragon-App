@@ -24,6 +24,7 @@ class AnimeModel {
   final List<TagModel> tags;
   final bool isFavorite;
   final bool isInMyList;
+  final bool isReviewed;
   final List<Votes> votes;
   // final bool isWatched;
   // final List<AnimeModel> relatedAnimes;
@@ -42,10 +43,12 @@ class AnimeModel {
     required this.characters,
     required this.reviewsCount,
     required this.tags,
-    required this.isFavorite,
-    required this.isInMyList,
+     this.isFavorite = true,
+     this.isInMyList = true,
+     this.isReviewed = true,
     required this.endDate,
     required this.votes,
+
   });
 
   AnimeModel copyWith({
@@ -65,8 +68,11 @@ class AnimeModel {
     List<TagModel>? tags,
     bool? isFavorite,
     bool? isInMyList,
+    bool? isReviewed,
     DateTime? endDate,
     List<Votes>? votes,
+
+
   }) {
     return AnimeModel(
       id: id ?? this.id,
@@ -87,6 +93,7 @@ class AnimeModel {
       isInMyList: isInMyList ?? this.isInMyList,
       endDate: endDate ?? this.endDate,
       votes: votes ?? this.votes,
+      isReviewed: isReviewed ?? this.isReviewed,
     );
   }
 
@@ -114,7 +121,7 @@ class AnimeModel {
             ?.map((x) => TagModel.fromMap(x['tag'] as Map<String, dynamic>))),
         isFavorite: map['isFavorite'] as bool? ?? false,
         isInMyList: map['isInMyList'] as bool? ?? false,
-        //  votes are like this {"1":2,"2":3}
+        isReviewed: map['isReviewed'] as bool? ?? false,
         votes: map['votes'] == null
             ? []
             : List<Votes>.from(map['votes']
@@ -149,6 +156,7 @@ class AnimeModel {
         studio.hashCode ^
         isFavorite.hashCode ^
         isInMyList.hashCode ^
+        isReviewed.hashCode ^
         endDate.hashCode ^
         votes.hashCode;
   }

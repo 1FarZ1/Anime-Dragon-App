@@ -37,7 +37,7 @@ class AddReviewRequest {
 }
 
 class AddReviewResponse {
-  final int newRating;
+  final double newRating;
   final int numReviewers;
   final List<Votes> votes;
 
@@ -50,8 +50,11 @@ class AddReviewResponse {
   // from json
   factory AddReviewResponse.fromMap(Map<String, dynamic> map) {
     return AddReviewResponse(
-      newRating: map['rating']['averageRating'],
-      numReviewers: map['rating']['numberOfReviews'],
+      newRating:
+          map['rating']['averageRating'] is double
+              ? map['rating']['averageRating'] as double
+              : (map['rating']['averageRating'] as int).toDouble(),
+      numReviewers: map['rating']['numberOfReviews'] as int,
       votes: List<Votes>.from(map['votes'].map((x) => Votes.fromMap(x))),
     );
   }

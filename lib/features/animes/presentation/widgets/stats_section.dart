@@ -28,12 +28,11 @@ class StatsSection extends ConsumerWidget {
           Expanded(child: ReviewersWidget(anime: anime, isGlobal: true)),
           Expanded(
               child: AddReviewButton(
-            text: 'اضافة تقييم',
+            text: anime.isReviewed ? 'تعديل التقييم' : 'اضافة تقييم',
             icon: Icons.star_border_outlined,
             animeId: anime.id,
             canAdd: user.isLoggedIn,
           )),
-          
           Expanded(
               child: AddToMyListButton(
             text: 'قائمتي',

@@ -17,6 +17,8 @@ final appStartupProvider = FutureProvider<void>((ref) async {
   // await ref.watch(sharedPrefProvider.future);
   // ref.watch(tokenProvider);
   // ref.watch(userProvider);
+
+  await Future.delayed(const Duration(seconds: 4));
 });
 
 class AppStartupWidget extends ConsumerWidget {
