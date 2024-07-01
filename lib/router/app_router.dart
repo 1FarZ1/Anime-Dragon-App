@@ -5,6 +5,7 @@ import 'package:anime_slayer/features/auth/presentation/auth_screen.dart';
 import 'package:anime_slayer/features/favorites/favorite_screen.dart';
 import 'package:anime_slayer/features/main_view.dart';
 import 'package:anime_slayer/features/profile/profile_screen.dart';
+import 'package:anime_slayer/features/settings/settings_screen.dart';
 import 'package:anime_slayer/features/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -105,6 +106,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return const MaterialPage(child: ProfileScreen());
         },
       ),
+
+      //settings
+      GoRoute(
+          path: '/settings',
+          name: AppRoutes.settings.name,
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: SettingsScreen());
+          }),
     ],
   );
 });

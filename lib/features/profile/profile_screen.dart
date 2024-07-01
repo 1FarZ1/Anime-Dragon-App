@@ -19,6 +19,39 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context.pop();
+                    ref.read(authRepositoryProvider).logout();
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.redAccent.withOpacity(0.8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 5,
+                    shadowColor: Colors.redAccent.shade200,
+                  ),
+                )),
+          ),
           const SizedBox(height: 20, width: double.infinity),
           CircleAvatar(
             radius: 50,
@@ -39,13 +72,6 @@ class ProfileScreen extends ConsumerWidget {
 
           //name
           20.verticalSpace,
-          ElevatedButton(
-            onPressed: () {
-              context.pop();
-              ref.read(authRepositoryProvider).logout();
-            },
-            child: const Text('Sign Out'),
-          )
         ],
       ),
     );

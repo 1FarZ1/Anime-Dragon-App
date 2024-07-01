@@ -88,7 +88,11 @@ class AnimeDrawer extends HookConsumerWidget {
             selected: selected == DrawerOption.favorite,
             title: Text('المفضلة',
                 style: TextStyle(
-                  color: user.isLoggedIn ? Colors.white : Colors.grey,
+                  color: user.isLoggedIn
+                      ? selected == DrawerOption.favorite
+                          ? Colors.deepPurple[100]
+                          : Colors.white
+                      : Colors.grey,
                 )),
             onTap: () {
               if (selected != DrawerOption.favorite && user.isLoggedIn) {
@@ -96,14 +100,24 @@ class AnimeDrawer extends HookConsumerWidget {
                 context.goNamed(AppRoutes.favorite.name);
               }
             },
-            leading: Icon(Icons.favorite,
-                color: user.isLoggedIn ? Colors.white : Colors.grey),
+            leading: Icon(
+              Icons.favorite,
+              color: user.isLoggedIn
+                  ? selected == DrawerOption.favorite
+                      ? Colors.deepPurple[100]
+                      : Colors.white
+                  : Colors.grey,
+            ),
           ),
           ListTile(
             selected: selected == DrawerOption.myList,
             title: Text('قائمتي',
                 style: TextStyle(
-                  color: user.isLoggedIn ? Colors.white : Colors.grey,
+                  color: user.isLoggedIn
+                      ? selected == DrawerOption.myList
+                          ? Colors.deepPurple[100]
+                          : Colors.white
+                      : Colors.grey,
                   // fontWeight: FontWeight.bold,
                 )),
             onTap: () {
@@ -115,15 +129,21 @@ class AnimeDrawer extends HookConsumerWidget {
                 );
               }
             },
-            leading: Icon(Icons.list,
-                color: user.isLoggedIn ? Colors.white : Colors.grey),
+            leading: Icon(
+              Icons.list,
+              color: user.isLoggedIn
+                  ? selected == DrawerOption.myList
+                      ? Colors.deepPurple[100]
+                      : Colors.white
+                  : Colors.grey,
+            ),
           ),
           ListTile(
             selected: selected == DrawerOption.settings,
             title: const Text('الاعدادات'),
             onTap: () {
               changeSelectedItem(DrawerOption.settings);
-              // Navigator.of(context).pushNamedAndRemoveUntil('/settings', (route) => false);
+              context.goNamed(AppRoutes.settings.name);
             },
             leading: const Icon(Icons.settings),
           ),
