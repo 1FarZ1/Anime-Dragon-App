@@ -9,7 +9,6 @@ import 'package:anime_slayer/features/animes/domaine/anime_model.dart';
 import 'anime_grid_card.dart';
 import 'anime_list_card.dart';
 
-//TODO: I really need to fix the  auth logic in this app
 class AnimesView extends ConsumerWidget {
   const AnimesView({
     super.key,
